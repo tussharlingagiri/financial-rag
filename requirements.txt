@@ -1,0 +1,15 @@
+llama-index
+llama-index-llms-openai
+llama-index-embeddings-openai
+llama-parse
+pypdf
+sentence-transformers
+chromadb
+faiss-cpu
+nest-asyncio
+pandas
+matplotlib
+requests
+pytest
+pytest-asyncio
+pytest-mock
