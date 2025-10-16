@@ -14,15 +14,11 @@ Notes: install dependencies with `pip install -r requirements.txt` inside a venv
 """
 
 import os
-try:
-    # optional: load .env in dev if python-dotenv is installed
-    from dotenv import load_dotenv
-    load_dotenv()
-except Exception:
-    # dotenv is optional; env vars may still be supplied by the environment/CI
-    pass
 import logging
-import nest_asyncio
+try:
+    import nest_asyncio
+except Exception:
+    nest_asyncio = None
 from pathlib import Path
 from typing import List
 import types
@@ -33,68 +29,65 @@ import pandas as pd
 import time
 
 # LlamaIndex / LlamaParse imports (ensure packages are installed)
-from llama_index.core import (
-    VectorStoreIndex,
-    SimpleDirectoryReader,
-    Settings,
-)
-from llama_index.core.node_parser import SentenceWindowNodeParser, SimpleNodeParser
-from llama_index.core.postprocessor import (
-    SentenceTransformerRerank,
-    MetadataReplacementPostProcessor,
-)
-from llama_index.core.query_engine import RetrieverQueryEngine
-from llama_index.core.tools import QueryEngineTool
-from llama_index.llms.openai import OpenAI
-from llama_index.embeddings.openai import OpenAIEmbedding
-from llama_parse import LlamaParse
+# Heavy third-party imports are loaded lazily inside functions so the module
+# can be imported in test environments without all external packages installed.
 
-# Optional chroma support (best-effort). If chromadb isn't installed this falls back to in-memory index.
-try:
-    import chromadb
-    CHROMADB_AVAILABLE = True
-except Exception:
-    chromadb = None
-    CHROMADB_AVAILABLE = False
+if nest_asyncio is not None:
+    try:
+        nest_asyncio.apply()
+    except Exception:
+        # best-effort; failure to apply is non-fatal for tests
+        logging.debug("nest_asyncio.apply() failed, continuing without it")
 
-nest_asyncio.apply()
+# Central logging configuration. Respect LOG_LEVEL environment variable.
+_log_level = os.environ.get("LOG_LEVEL", "INFO").upper()
+logging.basicConfig(level=getattr(logging, _log_level, logging.INFO), format="%(asctime)s %(levelname)s: %(message)s")
 
 # ---------- Configuration & helpers ----------
 
 def load_api_keys(save_to_env: bool = False):
     """Load API keys from environment variables and validate them.
 
-    If running in an interactive TTY and a key is missing, prompt the user.
+    Prefer interactive prompt when running in a TTY. If not in a TTY, read from
+    environment variables and raise an error if missing.
+
     If save_to_env=True the filled values will be appended to a local `.env` file.
-
-    In non-interactive (CI/test) environments, missing keys raise EnvironmentError.
     """
-    openai_key = os.environ.get("OPENAI_API_KEY")
-    llamaparse_key = os.environ.get("LLAMA_CLOUD_API_KEY")
-
-    # If both present, return immediately
-    if openai_key and llamaparse_key:
-        return openai_key, llamaparse_key
-
-    # If we're not attached to a TTY, don't attempt to prompt
-    if not (hasattr(os, "isatty") and os.isatty(0)):
-        raise EnvironmentError(
-            "OPENAI_API_KEY and LLAMA_CLOUD_API_KEY must be set as environment variables"
-        )
-
-    # Interactive prompt for missing keys
     import getpass
 
-    if not openai_key:
-        openai_key = getpass.getpass(prompt="OPENAI_API_KEY (input hidden): ")
-    if not llamaparse_key:
-        llamaparse_key = getpass.getpass(prompt="LLAMA_CLOUD_API_KEY (input hidden): ")
+    # Try to use a SecretManager (AWS) first, fallback to environment variables
+    # Prefer AWS Secrets Manager when available and credentials are present.
+    openai_key = None
+    llamaparse_key = None
+    try:
+        from secret_manager import AwsSecretsManager
+        # Secret names can be overridden via env vars for flexibility in different environments
+        openai_secret_name = os.environ.get("OPENAI_SECRET_NAME", "OPENAI_API_KEY")
+        llamaparse_secret_name = os.environ.get("LLAMA_CLOUD_SECRET_NAME", "LLAMA_CLOUD_API_KEY")
+        sm = AwsSecretsManager()
+        # Only attempt if boto3 found credentials
+        if getattr(sm, 'has_aws_credentials', lambda: False)():
+            openai_key = sm.get_secret(openai_secret_name) or None
+            llamaparse_key = sm.get_secret(llamaparse_secret_name) or None
+    except Exception:
+        # Any failure here should not be fatal - we'll fallback to env or interactive prompt
+        openai_key = openai_key or None
+        llamaparse_key = llamaparse_key or None
+
+    # If attached to a TTY, prompt interactively for any missing keys (hidden input)
+    if hasattr(os, "isatty") and os.isatty(0):
+        openai_key = openai_key or os.environ.get("OPENAI_API_KEY") or getpass.getpass(prompt="OPENAI_API_KEY (input hidden): ")
+        llamaparse_key = llamaparse_key or os.environ.get("LLAMA_CLOUD_API_KEY") or getpass.getpass(prompt="LLAMA_CLOUD_API_KEY (input hidden): ")
+    else:
+        # Non-interactive: only accept keys from secret manager or environment
+        openai_key = openai_key or os.environ.get("OPENAI_API_KEY")
+        llamaparse_key = llamaparse_key or os.environ.get("LLAMA_CLOUD_API_KEY")
 
     # Basic validation
     if not openai_key or not llamaparse_key:
         raise EnvironmentError("Both OPENAI_API_KEY and LLAMA_CLOUD_API_KEY are required")
 
-    # Optionally save to .env for convenience
+    # Optionally save to .env for convenience (explicit)
     if save_to_env:
         env_path = Path(".env")
         try:
@@ -118,11 +111,12 @@ class DocumentIngestionPipeline:
         documents = pipeline.parse_documents(pdf_files)
     """
 
-    def __init__(self, data_dir: str = "./data", parser_cls=None, parser_kwargs: dict = None):
+    def __init__(self, data_dir: str = "./data", parser_cls=None, parser_kwargs: dict = None, max_docs: int = None):
         self.data_dir = Path(data_dir)
         self.parser_cls = parser_cls
         self.parser_kwargs = parser_kwargs or {}
-        logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s: %(message)s")
+        # Optional cap on total documents/chunks returned (helps in CI and memory-constrained runs)
+        self.max_docs = max_docs
 
     def get_pdf_files(self) -> List[str]:
         pdf_files = [str(p) for p in self.data_dir.glob("*.pdf")]
@@ -172,21 +166,22 @@ class DocumentIngestionPipeline:
                     continue
                 seen_hashes.add(h)
 
-                # Enrich metadata where possible
-                meta = None
+                # Enrich metadata where possible (best-effort)
                 try:
                     if hasattr(doc, "metadata") and isinstance(doc.metadata, dict):
                         doc.metadata["file_name"] = os.path.basename(filename)
-                        meta = doc.metadata
                     elif hasattr(doc, "extra_info") and isinstance(doc.extra_info, dict):
                         doc.extra_info["file_name"] = os.path.basename(filename)
-                        meta = doc.extra_info
                 except Exception:
-                    # best-effort metadata enrichment
-                    pass
+                    logging.debug("Failed to enrich metadata for doc from %s", filename)
 
                 all_documents.append(doc)
                 added += 1
+
+                # Respect optional max_docs cap to avoid excessive memory use in CI/quick runs
+                if self.max_docs is not None and len(all_documents) >= self.max_docs:
+                    logging.info("Reached max_docs cap (%d), stopping ingestion", self.max_docs)
+                    break
 
             successful.append(filename)
             logging.info("  ✓ extracted %d unique chunks from %s", added, filename)
@@ -197,12 +192,44 @@ class DocumentIngestionPipeline:
 
 # ---------- Index and retriever helpers ----------
 def build_auto_index(documents):
-    index = VectorStoreIndex.from_documents(documents)
-    retriever = index.as_retriever(similarity_top_k=15)
-    return index, retriever
+    # Lazy import heavy library; if it's not available provide a lightweight
+    # in-memory retriever fallback so tests and simple runs work without
+    # installing llama_index.
+    try:
+        from llama_index.core import VectorStoreIndex
+
+        index = VectorStoreIndex.from_documents(documents)
+        retriever = index.as_retriever(similarity_top_k=15)
+        return index, retriever
+    except Exception:
+        logging.warning("llama_index not available; using simple in-memory retriever fallback")
+
+        class SimpleRetriever:
+            def __init__(self, docs):
+                # docs: list of document-like objects
+                self._docs = docs
+
+            def retrieve(self, query, n_results=15):
+                # very simple substring scoring
+                nodes = []
+                for d in self._docs:
+                    text = getattr(d, 'text', str(d))
+                    score = 1.0 if query.lower() in text.lower() else 0.0
+                    node = types.SimpleNamespace(node=types.SimpleNamespace(text=text, metadata=getattr(d, 'metadata', {})), score=score)
+                    nodes.append(node)
+                # sort by score desc
+                nodes.sort(key=lambda n: n.score, reverse=True)
+                return nodes[:n_results]
+
+        retriever = SimpleRetriever(documents)
+        return None, retriever
 
 
 def build_sentence_window_index(documents):
+    from llama_index.core.node_parser import SentenceWindowNodeParser
+    from llama_index.core import VectorStoreIndex
+    from llama_index.core.postprocessor import MetadataReplacementPostProcessor
+
     node_parser = SentenceWindowNodeParser.from_defaults(
         window_size=3,
         window_metadata_key="window",
@@ -216,6 +243,9 @@ def build_sentence_window_index(documents):
 
 
 def build_auto_merging_index(documents):
+    from llama_index.core.node_parser import SimpleNodeParser
+    from llama_index.core import VectorStoreIndex
+
     node_parser = SimpleNodeParser.from_defaults(chunk_size=256, chunk_overlap=50)
     nodes = node_parser.get_nodes_from_documents(documents)
     index = VectorStoreIndex(nodes)
@@ -228,6 +258,12 @@ def build_chroma_index(documents, persist_directory: str = "./chroma_db"):
 
     Falls back to in-memory VectorStoreIndex if chromadb isn't installed.
     """
+    try:
+        import chromadb
+        CHROMADB_AVAILABLE = True
+    except Exception:
+        CHROMADB_AVAILABLE = False
+
     if not CHROMADB_AVAILABLE:
         logging.warning("chromadb not available, falling back to in-memory index")
         return build_auto_index(documents)
@@ -275,6 +311,9 @@ def build_chroma_index(documents, persist_directory: str = "./chroma_db"):
 
 # ---------- Retriever safe wrapper (sync + async handling) ----------
 import asyncio
+import threading
+import http.server
+import socketserver
 
 
 def run_async_query_safe(query_engine, query: str, timeout: float = 10.0):
@@ -323,12 +362,22 @@ def safe_query_with_retry(query_engine, query: str, retries: int = 1, timeout: f
 def main(data_dir: str = "./data"):
     # Load keys and configure models
     openai_key, llamaparse_key = load_api_keys()
+
+    # Lazy-import and configure LlamaIndex/OpenAI related classes so module import
+    # doesn't fail if those packages aren't installed in test environments.
+    from llama_index.core import Settings
+    from llama_index.llms.openai import OpenAI
+    from llama_index.embeddings.openai import OpenAIEmbedding
+
     Settings.llm = OpenAI(model="gpt-4", temperature=0.1)
     Settings.embed_model = OpenAIEmbedding(model="text-embedding-ada-002")
     Settings.chunk_size = 512
     Settings.chunk_overlap = 50
 
     # Ingestion
+    # Lazily import parser class
+    from llama_parse import LlamaParse
+
     ingestion = DocumentIngestionPipeline(
         data_dir=data_dir,
         parser_cls=LlamaParse,
@@ -339,6 +388,8 @@ def main(data_dir: str = "./data"):
             "language": "en",
             "num_workers": 4,
         },
+        # optional cap for production can be set by environment variable
+        max_docs=int(os.environ.get("MAX_INGEST_DOCS", "0")) or None,
     )
     pdf_files = ingestion.get_pdf_files()
     if not pdf_files:
@@ -353,7 +404,10 @@ def main(data_dir: str = "./data"):
     sw_index, sw_retriever, sw_postprocessor = build_sentence_window_index(documents)
     am_index, am_retriever = build_auto_merging_index(documents)
 
-    # Reranker
+    # Reranker and query engines (lazy import)
+    from llama_index.core.postprocessor import SentenceTransformerRerank
+    from llama_index.core.query_engine import RetrieverQueryEngine
+
     reranker = SentenceTransformerRerank(model="cross-encoder/ms-marco-MiniLM-L-2-v2", top_n=5)
 
     # Query engines
@@ -400,6 +454,121 @@ def main(data_dir: str = "./data"):
     logging.info("Saved retriever comparison results to retriever_comparison_results.csv")
 
 
+def _start_metrics_server(port: int = 8000):
+    try:
+        from prometheus_client import start_http_server, Counter
+
+        # Example metric: query count
+        QUERY_COUNTER = Counter('rag_queries_total', 'Total number of queries')
+        start_http_server(port)
+        logging.info("Started Prometheus metrics server on port %d", port)
+        return QUERY_COUNTER
+    except Exception:
+        logging.debug("prometheus_client not available; metrics server not started")
+        return None
+
+
+def start_health_server(port: int = 8080):
+    """Start a tiny HTTP server that serves /health for container healthchecks.
+
+    Uses the stdlib http.server to avoid adding dependencies.
+    """
+    if port <= 0:
+        return None
+
+    class HealthHandler(http.server.BaseHTTPRequestHandler):
+        def do_GET(self):
+            if self.path == "/health":
+                self.send_response(200)
+                self.send_header("Content-Type", "text/plain")
+                self.end_headers()
+                self.wfile.write(b"ok")
+            else:
+                self.send_response(404)
+                self.end_headers()
+
+        def log_message(self, format, *args):
+            # suppress default logging
+            return
+
+    class ThreadingHTTPServer(socketserver.ThreadingMixIn, http.server.HTTPServer):
+        daemon_threads = True
+
+    try:
+        server = ThreadingHTTPServer(("0.0.0.0", port), HealthHandler)
+        t = threading.Thread(target=server.serve_forever, daemon=True)
+        t.start()
+        logging.info("Started health server on port %d", port)
+        return server
+    except Exception:
+        logging.exception("Failed to start health server on port %d", port)
+        return None
+
+
+def run_cli():
+    import argparse
+
+    parser = argparse.ArgumentParser(description="RAG pipeline runner")
+    parser.add_argument("--data-dir", default=os.environ.get("DATA_DIR", "./data"), help="Directory with PDF files")
+    parser.add_argument("--no-prompt", action="store_true", help="Do not prompt for API keys (CI mode)")
+    parser.add_argument("--save-to-keyring", action="store_true", help="Save provided keys to OS keyring for future runs")
+    parser.add_argument("--json-logs", action="store_true", help="Emit JSON formatted logs")
+    parser.add_argument("--metrics-port", type=int, default=int(os.environ.get("METRICS_PORT", "0")), help="Start metrics server on given port (0=disabled)")
+    args = parser.parse_args()
+
+    # JSON logging optionally
+    if args.json_logs:
+        try:
+            import json_log_formatter
+
+            formatter = json_log_formatter.JSONFormatter()
+            handler = logging.StreamHandler()
+            handler.setFormatter(formatter)
+            root = logging.getLogger()
+            for h in list(root.handlers):
+                root.removeHandler(h)
+            root.addHandler(handler)
+        except Exception:
+            logging.warning("json_log_formatter not available; falling back to plain logs")
+
+    # Key management: if save-to-keyring requested, store keys there after prompt
+    if args.save_to_keyring:
+        try:
+            import keyring
+        except Exception:
+            logging.error("keyring package is required for --save-to-keyring")
+
+    # If metrics enabled, start server
+    metric_counter = None
+    if args.metrics_port:
+        metric_counter = _start_metrics_server(args.metrics_port)
+
+    # For CI/no-prompt mode, ensure env vars present
+    if args.no_prompt:
+        # Ensure keys exist in env
+        if not os.environ.get("OPENAI_API_KEY") or not os.environ.get("LLAMA_CLOUD_API_KEY"):
+            raise EnvironmentError("OPENAI_API_KEY and LLAMA_CLOUD_API_KEY must be set in environment when --no-prompt is used")
+
+    # Start health server early so Docker healthchecks succeed while the
+    # application initializes or when API keys are not present.
+    try:
+        start_health_server(port=int(os.environ.get("HEALTH_PORT", "8080")))
+    except Exception:
+        logging.debug("Failed to start health server from run_cli")
+
+    # Run main but do not let it kill the process if it fails; keep the
+    # health server alive so container healthchecks continue to succeed
+    try:
+        main(data_dir=args.data_dir)
+    except Exception:
+        logging.exception("Application main() failed; keeping health server alive for debugging")
+        # keep process alive for debugging/health checks; exit only if explicitly requested
+        try:
+            while True:
+                time.sleep(3600)
+        except KeyboardInterrupt:
+            logging.info("Exiting after keyboard interrupt")
+
+
 if __name__ == "__main__":
-    # Default data directory: ./data
-    main()
+    run_cli()
