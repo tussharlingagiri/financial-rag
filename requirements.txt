@@ -14,3 +14,7 @@ pytest
 pytest-asyncio
 pytest-mock
 boto3
+
+# Optional utilities used by the CLI
+keyring
+json-log-formatter
