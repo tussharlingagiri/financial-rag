@@ -18,10 +18,19 @@ jobs:
 
     strategy:
       matrix:
-        python-version: [3.10, 3.11]
+        python-version: ['3.10', '3.11']
 
     steps:
       - uses: actions/checkout@v4
+
+      - name: Validate python-version
+        run: |
+          echo "Validating python-version: '${{ matrix.python-version }}'"
+          # Disallow accidental '3.1' which is not a valid/available runner version
+          if [[ "${{ matrix.python-version }}" =~ ^3\.1($|[^0-9]) ]]; then
+            echo "ERROR: unsupported python-version '${{ matrix.python-version }}' detected. Replace with a valid minor version like '3.10' or '3.11'."
+            exit 1
+          fi
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -102,10 +111,18 @@ jobs:
 
     strategy:
       matrix:
-        python-version: [3.10, 3.11]
+        python-version: ['3.10', '3.11']
 
     steps:
       - uses: actions/checkout@v4
+
+      - name: Validate python-version
+        run: |
+          echo "Validating python-version: '${{ matrix.python-version }}'"
+          if [[ "${{ matrix.python-version }}" =~ ^3\.1($|[^0-9]) ]]; then
+            echo "ERROR: unsupported python-version '${{ matrix.python-version }}' detected. Replace with a valid minor version like '3.10' or '3.11'."
+            exit 1
+          fi
 
       - name: Set up Python
         uses: actions/setup-python@v4

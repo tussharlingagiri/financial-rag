@@ -456,7 +456,14 @@ def main(data_dir: str = "./data"):
 
 def _start_metrics_server(port: int = 8000):
     try:
-        from prometheus_client import start_http_server, Counter
+        # Import dynamically to avoid static-analysis/editor warnings when the
+        # optional `prometheus_client` package isn't installed in lightweight
+        # dev/test environments.
+        import importlib
+
+        prom = importlib.import_module('prometheus_client')
+        start_http_server = getattr(prom, 'start_http_server')
+        Counter = getattr(prom, 'Counter')
 
         # Example metric: query count
         QUERY_COUNTER = Counter('rag_queries_total', 'Total number of queries')
