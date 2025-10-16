@@ -100,3 +100,29 @@ The app exposes a minimal HTTP `/health` endpoint on port 8080 to support contai
 
 A sample IAM policy that grants `secretsmanager:GetSecretValue` for the two secrets is provided in `deploy/iam_policy_secrets.json`. Update the `REGION` and `ACCOUNT_ID` placeholders before applying.
 - The code falls back to environment variables `OPENAI_API_KEY` and `LLAMA_CLOUD_API_KEY` or to an interactive prompt if running in a TTY.
+
+## Development (tooling)
+
+The repository pins developer tooling to ensure deterministic lockfile generation and consistent linting across contributors. A `dev-requirements.txt` file is provided with the recommended versions.
+
+To setup your development environment and regenerate `requirements-lock.txt`:
+
+```bash
+# create a venv and activate
+python3 -m venv .venv
+source .venv/bin/activate
+
+# install pinned dev tools
+pip install -r dev-requirements.txt
+
+# regenerate lockfile (use the same pip/pip-tools as CI)
+python -m piptools compile --output-file=requirements-lock.txt requirements.txt
+
+# run tests and linters
+pip install -r requirements-lock.txt
+ruff check .
+mypy --ignore-missing-imports .
+pytest -q
+```
+
+Note: CI is configured to pin `pip==25.2` and `pip-tools==7.5.1` so please use the same versions above when regenerating the lockfile.
