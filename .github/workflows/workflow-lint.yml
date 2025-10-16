@@ -22,7 +22,9 @@ jobs:
           # Look for an exact '3.1' token used as a python-version value.
           # We want to avoid matching 3.10 or 3.11 (substring matches), so use a regex
           # that finds python-version: 3.1 or list-containing 3.1
-          found=$(grep -R --line-number -E "python-version\s*:\s*([\"']?3\.1[\"']?|\[[^]]*\b3\.1\b[^]]*\])" .github/workflows || true)
+          # Only match an exact '3.1' token (not 3.10 or 3.11). Use a negative
+          # lookahead to ensure there isn't an immediately following digit.
+          found=$(grep -R --line-number -E "python-version\s*:\s*([\"']?3\.1(?![0-9])[\"']?|\[[^]]*\b3\.1(?![0-9])\b[^]]*\])" .github/workflows || true)
           if [ -n "$found" ]; then
             echo "Found unsupported python version '3.1' in workflows:"
             echo "$found"
