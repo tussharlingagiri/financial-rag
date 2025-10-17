@@ -1,0 +1,9 @@
+repos:
+  - repo: local
+    hooks:
+      - id: check-lockfile
+        name: Check requirements-lock.txt is up-to-date
+        # Use system bash and pass the script as an argument
+        entry: bash
+        args: ["scripts/check_lockfile.sh"]
+        language: system

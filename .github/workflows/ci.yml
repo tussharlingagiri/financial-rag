@@ -47,13 +47,10 @@ jobs:
       - name: Validate requirements-lock.txt
         # Regenerate and ensure it matches the committed lockfile to avoid drift
         run: |
-          # Install pinned tooling exactly to avoid resolver drift
           python -m pip install --upgrade pip==25.2 pip-tools==7.5.1
-          echo "python: $(python --version)"
-          echo "pip: $(python -m pip --version)"
-          echo "pip-tools: $(python -m piptools --version || true)"
-          # Use python -m piptools for deterministic invocation
+          # regenerate lockfile deterministically
           python -m piptools compile --output-file=requirements-lock.txt requirements.txt
+          # fail if the generated lockfile differs from the committed one
           git --no-pager diff --exit-code requirements-lock.txt || (echo "requirements-lock.txt is out of date. Run: python -m piptools compile --output-file=requirements-lock.txt requirements.txt" && exit 1)
 
       - name: Lint and type-check
