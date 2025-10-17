@@ -53,8 +53,6 @@ certifi==2025.10.5
     #   kubernetes
     #   llama-cloud
     #   requests
-cffi==2.0.0
-    # via cryptography
 charset-normalizer==3.4.4
     # via requests
 chromadb==1.1.1
@@ -71,8 +69,6 @@ coloredlogs==15.0.1
     # via onnxruntime
 contourpy==1.3.0
     # via matplotlib
-cryptography==46.0.3
-    # via secretstorage
 cycler==0.12.1
     # via matplotlib
 dataclasses-json==0.6.7
@@ -172,10 +168,6 @@ iniconfig==2.1.0
     # via pytest
 jaraco-classes==3.4.0
     # via keyring
-jeepney==0.9.0
-    # via
-    #   keyring
-    #   secretstorage
 jinja2==3.1.6
     # via
     #   banks
@@ -369,8 +361,6 @@ pyasn1-modules==0.4.2
     # via google-auth
 pybase64==1.4.2
     # via chromadb
-pycparser==2.23
-    # via cffi
 pydantic==2.12.2
     # via
     #   banks
@@ -468,8 +458,6 @@ scipy==1.13.1
     # via
     #   scikit-learn
     #   sentence-transformers
-secretstorage==3.4.0
-    # via keyring
 sentence-transformers==5.1.1
     # via -r requirements.txt
 shellingham==1.5.4
@@ -532,7 +520,6 @@ typing-extensions==4.15.0
     #   anyio
     #   beautifulsoup4
     #   chromadb
-    #   cryptography
     #   exceptiongroup
     #   grpcio
     #   huggingface-hub

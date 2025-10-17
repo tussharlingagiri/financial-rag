@@ -25,7 +25,6 @@ import types
 import hashlib
 import json
 
-import pandas as pd
 import time
 
 # LlamaIndex / LlamaParse imports (ensure packages are installed)
@@ -84,8 +83,15 @@ def load_api_keys(save_to_env: bool = False):
         llamaparse_key = llamaparse_key or os.environ.get("LLAMA_CLOUD_API_KEY")
 
     # Basic validation
-    if not openai_key or not llamaparse_key:
-        raise EnvironmentError("Both OPENAI_API_KEY and LLAMA_CLOUD_API_KEY are required")
+    # If using Bedrock as the LLM provider we don't require an OpenAI key;
+    # the Bedrock adapter relies on AWS credentials (IAM role / env vars) instead.
+    provider = os.environ.get("LLM_PROVIDER", "openai").lower()
+    if provider == "bedrock":
+        if not llamaparse_key:
+            raise EnvironmentError("LLAMA_CLOUD_API_KEY is required for document parsing when LLM_PROVIDER=bedrock")
+    else:
+        if not openai_key or not llamaparse_key:
+            raise EnvironmentError("Both OPENAI_API_KEY and LLAMA_CLOUD_API_KEY are required")
 
     # Optionally save to .env for convenience (explicit)
     if save_to_env:
@@ -363,16 +369,77 @@ def main(data_dir: str = "./data"):
     # Load keys and configure models
     openai_key, llamaparse_key = load_api_keys()
 
+    # Lazy-import pandas here so importing `app` in lightweight test
+    # environments doesn't require pandas to be installed at collection time.
+    try:
+        import pandas as pd
+    except Exception:
+        pd = None
+
     # Lazy-import and configure LlamaIndex/OpenAI related classes so module import
     # doesn't fail if those packages aren't installed in test environments.
-    from llama_index.core import Settings
-    from llama_index.llms.openai import OpenAI
-    from llama_index.embeddings.openai import OpenAIEmbedding
+    provider = os.environ.get("LLM_PROVIDER", "openai").lower()
+    if provider == "bedrock":
+        try:
+            from llm_bedrock import BedrockLLMAdapter
 
-    Settings.llm = OpenAI(model="gpt-4", temperature=0.1)
-    Settings.embed_model = OpenAIEmbedding(model="text-embedding-ada-002")
-    Settings.chunk_size = 512
-    Settings.chunk_overlap = 50
+            bedrock_model = os.environ.get("BEDROCK_MODEL_ID")
+            if not bedrock_model:
+                raise EnvironmentError("BEDROCK_MODEL_ID must be set when LLM_PROVIDER=bedrock")
+
+            # Create a minimal adapter and hook it into LlamaIndex Settings if available
+            try:
+                from llama_index.core import Settings
+
+                # LlamaIndex expects an object implementing a generate-like interface
+                Settings.llm = BedrockLLMAdapter(model_id=bedrock_model, temperature=0.1)
+            except Exception:
+                # If LlamaIndex is not present, expose a global adapter for ad-hoc usage
+                globals()["BEDROCK_ADAPTER"] = BedrockLLMAdapter(model_id=bedrock_model, temperature=0.1)
+        except Exception:
+            logging.exception("Failed to configure Bedrock provider; falling back to OpenAI settings")
+            # fall through to openai configuration below
+            provider = "openai"
+
+    if provider == "openai":
+        from llama_index.core import Settings
+        from llama_index.llms.openai import OpenAI
+        try:
+            from llama_index.embeddings.openai import OpenAIEmbedding
+        except Exception as e:
+            # Helpful diagnostic: list installed "llama" packages and suggest
+            # installing from the project's lockfile. This makes the error clearer
+            # for developers who forgot to install the pinned requirements.
+            try:
+                import pkg_resources
+
+                installed_llama = [f"{d.project_name}=={d.version}" for d in pkg_resources.working_set if "llama" in d.project_name.lower()]
+            except Exception:
+                installed_llama = []
+
+            logging.error("Failed to import 'llama_index.embeddings.openai': %s", e)
+            logging.error("Installed llama-related packages: %s", installed_llama or "none found")
+            logging.error("Fix: activate your venv and run: python -m pip install -r requirements-lock.txt")
+            raise
+
+        # Prefer passing the API key explicitly when we have it to avoid
+        # relying on environment state elsewhere. load_api_keys() returns
+        # the key as `openai_key` above.
+        llm_kwargs = {"model": "gpt-4", "temperature": 0.1}
+        embed_kwargs = {"model": "text-embedding-ada-002"}
+        try:
+            if openai_key:
+                llm_kwargs["api_key"] = openai_key
+                embed_kwargs["api_key"] = openai_key
+        except NameError:
+            # Defensive: if for some reason openai_key isn't in scope, continue
+            # but log a warning so users know to provide credentials via env.
+            logging.debug("openai_key not present in scope; relying on environment variables for OpenAI credentials")
+
+        Settings.llm = OpenAI(**llm_kwargs)
+        Settings.embed_model = OpenAIEmbedding(**embed_kwargs)
+        Settings.chunk_size = 512
+        Settings.chunk_overlap = 50
 
     # Ingestion
     # Lazily import parser class
@@ -415,8 +482,17 @@ def main(data_dir: str = "./data"):
     am_query_engine = RetrieverQueryEngine(retriever=am_retriever, node_postprocessors=[reranker])
     a_query_engine = RetrieverQueryEngine(retriever=auto_retriever, node_postprocessors=[reranker])
 
-    # Example evaluation: find revenue-related chunks
-    all_nodes = list(auto_index.docstore.docs.values())
+    # Example evaluation: find revenue-related chunks. If `llama_index` is
+    # unavailable we fall back to a simple node-like structure built from the
+    # parsed `documents` so the rest of the evaluation code can run in dev/CI.
+    try:
+        if auto_index is not None:
+            all_nodes = list(auto_index.docstore.docs.values())
+        else:
+            raise AttributeError("auto_index is None, using fallback")
+    except Exception:
+        logging.debug("Falling back to simple node list because auto_index.docstore is not available")
+        all_nodes = [types.SimpleNamespace(text=getattr(d, 'text', str(d)), metadata=getattr(d, 'metadata', {})) for d in documents]
     revenue_chunks = [n for n in all_nodes if ("revenue" in n.text.lower() or "net revenues" in n.text.lower()) and any(y in n.text for y in ["2020","2021","2022"])]
     logging.info("Found %d revenue-related chunks", len(revenue_chunks))
     for n in revenue_chunks[:5]:
