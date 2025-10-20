@@ -1,8 +1,6 @@
 import os
 import json
 import logging
-import typing
-import io
 
 # boto3 is optional for tests that mock it. Provide a lightweight stub when
 # the real package isn't available so tests can monkeypatch `llm_bedrock.boto3.client`.

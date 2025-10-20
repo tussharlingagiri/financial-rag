@@ -15,6 +15,11 @@ Notes: install dependencies with `pip install -r requirements.txt` inside a venv
 
 import os
 import logging
+import asyncio
+import threading
+import http.server
+import socketserver
+
 try:
     import nest_asyncio
 except Exception:
@@ -29,18 +34,7 @@ import time
 # Heavy third-party imports are loaded lazily inside functions so the module
 # can be imported in test environments without all external packages installed.
 
-if nest_asyncio is not None:
-    try:
-        nest_asyncio.apply()
-    except Exception:
-        # best-effort; failure to apply is non-fatal for tests
-        logging.debug("nest_asyncio.apply() failed, continuing without it")
 
-# Central logging configuration. Respect LOG_LEVEL environment variable.
-_log_level = os.environ.get("LOG_LEVEL", "INFO").upper()
-logging.basicConfig(level=getattr(logging, _log_level, logging.INFO), format="%(asctime)s %(levelname)s: %(message)s")
-
-# ---------- Configuration & helpers ----------
 
 def load_api_keys(save_to_env: bool = False):
     """Load API keys from environment variables and validate them.

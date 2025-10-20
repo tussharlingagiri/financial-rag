@@ -72,10 +72,10 @@ class AwsSecretsManager(SecretManager):
             raise RuntimeError("AWS Secrets Manager client not available")
         try:
             self.client.put_secret_value(SecretId=name, SecretString=value)
-        except Exception as e:
-              import logging
-              logging.exception("Failed to put secret %s", name)
-        raise
+        except Exception:
+            import logging
+            logging.exception("Failed to put secret %s", name)
+            raise
 
     @staticmethod
     def has_aws_credentials() -> bool:
