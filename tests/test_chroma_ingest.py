@@ -10,6 +10,8 @@ from app import build_chroma_index  # noqa: E402
 
 def test_build_chroma_index_fallback(monkeypatch):
     # Simulate chromadb not installed
+    # Note: This test may trigger a pydantic warning about 'validate_default'.
+    # This warning is safe to ignore for this test.
     monkeypatch.setitem(sys.modules, 'chromadb', None)
 
     class DummyDoc:

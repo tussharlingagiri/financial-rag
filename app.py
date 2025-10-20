@@ -320,6 +320,10 @@ import threading
 import http.server
 import socketserver
 
+import asyncio
+import threading
+import http.server
+import socketserver
 
 def run_async_query_safe(query_engine, query: str, timeout: float = 10.0):
     """Run a query against a query_engine that may be async or sync.
