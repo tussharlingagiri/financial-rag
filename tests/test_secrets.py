@@ -1,13 +1,11 @@
 import os
 import sys
-import types
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 if ROOT not in sys.path:
     sys.path.insert(0, ROOT)
 
-from secret_manager import EnvSecretManager
-from app import load_api_keys
+from app import load_api_keys  # noqa: E402
 
 
 def test_env_secret_manager_get_set(monkeypatch, tmp_path):

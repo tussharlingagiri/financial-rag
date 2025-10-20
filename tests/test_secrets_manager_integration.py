@@ -1,7 +1,6 @@
-import os
 import pytest
 
-from secret_manager import EnvSecretManager, AwsSecretsManager
+from secret_manager import EnvSecretManager
 
 
 def test_env_secret_manager_get_set(monkeypatch):

@@ -1,6 +1,4 @@
 import json
-import types
-import pytest
 
 
 def make_fake_boto3(client_response_bytes: bytes):

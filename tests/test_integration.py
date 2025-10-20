@@ -1,7 +1,6 @@
 import os
 import sys
 import types
-import pytest
 
 # Ensure repo root is on sys.path for importing app.py when tests run
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
@@ -11,7 +10,7 @@ if ROOT not in sys.path:
 # A light-weight integration-style smoke test that mocks heavy external
 # dependencies (like llama_parse) so CI can run quickly.
 
-from app import DocumentIngestionPipeline
+from app import DocumentIngestionPipeline  # noqa: E402
 
 
 class DummyParser:

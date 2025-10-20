@@ -1,12 +1,11 @@
 import os
 import sys
-import types
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 if ROOT not in sys.path:
     sys.path.insert(0, ROOT)
 
-from app import build_chroma_index
+from app import build_chroma_index  # noqa: E402
 
 
 def test_build_chroma_index_fallback(monkeypatch):
