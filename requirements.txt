@@ -18,3 +18,4 @@ keyring==25.6.0
 json-log-formatter==1.1.1
 uvicorn[standard]==0.38.0
 sqlalchemy[asyncio]==2.0.44
+prometheus_client==0.20.0

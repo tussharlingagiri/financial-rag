@@ -21,10 +21,8 @@ except Exception:
     nest_asyncio = None
 from pathlib import Path
 from typing import List
-import types
 import hashlib
-import json
-
+import types
 import time
 
 # LlamaIndex / LlamaParse imports (ensure packages are installed)
@@ -313,6 +311,7 @@ def build_chroma_index(documents, persist_directory: str = "./chroma_db"):
     except Exception:
         logging.exception("Failed to create chroma index; falling back to in-memory VectorStoreIndex")
         return build_auto_index(documents)
+
 
 
 # ---------- Retriever safe wrapper (sync + async handling) ----------
@@ -617,14 +616,13 @@ def run_cli():
     # Key management: if save-to-keyring requested, store keys there after prompt
     if args.save_to_keyring:
         try:
-            import keyring
+            import keyring  # noqa: F401
         except Exception:
             logging.error("keyring package is required for --save-to-keyring")
 
     # If metrics enabled, start server
-    metric_counter = None
     if args.metrics_port:
-        metric_counter = _start_metrics_server(args.metrics_port)
+        _start_metrics_server(args.metrics_port)
 
     # For CI/no-prompt mode, ensure env vars present
     if args.no_prompt:
