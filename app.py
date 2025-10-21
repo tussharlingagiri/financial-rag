@@ -15,10 +15,6 @@ Notes: install dependencies with `pip install -r requirements.txt` inside a venv
 
 import os
 import logging
-import asyncio
-import threading
-import http.server
-import socketserver
 
 try:
     import nest_asyncio
@@ -46,65 +42,40 @@ def load_api_keys(save_to_env: bool = False):
     """
     import getpass
 
-    # Try to use a SecretManager (AWS) first, fallback to environment variables
-    # Prefer AWS Secrets Manager when available and credentials are present.
-    openai_key = None
-    llamaparse_key = None
-    try:
-        from secret_manager import AwsSecretsManager
-        # Secret names can be overridden via env vars for flexibility in different environments
-        openai_secret_name = os.environ.get("OPENAI_SECRET_NAME", "OPENAI_API_KEY")
-        llamaparse_secret_name = os.environ.get("LLAMA_CLOUD_SECRET_NAME", "LLAMA_CLOUD_API_KEY")
-        sm = AwsSecretsManager()
-        # Only attempt if boto3 found credentials
-        if getattr(sm, 'has_aws_credentials', lambda: False)():
-            openai_key = sm.get_secret(openai_secret_name) or None
-            llamaparse_key = sm.get_secret(llamaparse_secret_name) or None
-    except Exception:
-        # Any failure here should not be fatal - we'll fallback to env or interactive prompt
-        openai_key = openai_key or None
-        llamaparse_key = llamaparse_key or None
 
-    # If attached to a TTY, prompt interactively for any missing keys (hidden input)
-    if hasattr(os, "isatty") and os.isatty(0):
-        openai_key = openai_key or os.environ.get("OPENAI_API_KEY") or getpass.getpass(prompt="OPENAI_API_KEY (input hidden): ")
-        llamaparse_key = llamaparse_key or os.environ.get("LLAMA_CLOUD_API_KEY") or getpass.getpass(prompt="LLAMA_CLOUD_API_KEY (input hidden): ")
-    else:
-        # Non-interactive: only accept keys from secret manager or environment
-        openai_key = openai_key or os.environ.get("OPENAI_API_KEY")
-        llamaparse_key = llamaparse_key or os.environ.get("LLAMA_CLOUD_API_KEY")
+    # Always prompt interactively for OpenAI key if not set
+    openai_key = os.environ.get("OPENAI_API_KEY")
+    if not openai_key:
+        openai_key = getpass.getpass(prompt="Enter your OPENAI_API_KEY (input hidden): ")
+    if not openai_key:
+        raise EnvironmentError("OPENAI_API_KEY is required for this workflow.")
 
-    # Basic validation
-    # If using Bedrock as the LLM provider we don't require an OpenAI key;
-    # the Bedrock adapter relies on AWS credentials (IAM role / env vars) instead.
-    provider = os.environ.get("LLM_PROVIDER", "openai").lower()
-    if provider == "bedrock":
-        if not llamaparse_key:
-            raise EnvironmentError("LLAMA_CLOUD_API_KEY is required for document parsing when LLM_PROVIDER=bedrock")
-    else:
-        if not openai_key or not llamaparse_key:
-            raise EnvironmentError("Both OPENAI_API_KEY and LLAMA_CLOUD_API_KEY are required")
+    # Prompt interactively for LlamaCloud key if not set
+    llamacloud_key = os.environ.get("LLAMA_CLOUD_API_KEY")
+    if not llamacloud_key:
+        llamacloud_key = getpass.getpass(prompt="Enter your LLAMA_CLOUD_API_KEY (input hidden): ")
+    if not llamacloud_key:
+        logging.warning("LLAMA_CLOUD_API_KEY is not set. Some features may not work.")
 
-    # Optionally save to .env for convenience (explicit)
     if save_to_env:
         env_path = Path(".env")
         try:
             with env_path.open("a") as f:
                 f.write(f"OPENAI_API_KEY={openai_key}\n")
-                f.write(f"LLAMA_CLOUD_API_KEY={llamaparse_key}\n")
+                f.write(f"LLAMA_CLOUD_API_KEY={llamacloud_key}\n")
             logging.info("Saved API keys to %s (be careful not to commit this file)", env_path)
         except Exception:
-            logging.exception("Failed to save keys to .env")
+            logging.exception("Failed to save key to .env")
 
-    return openai_key, llamaparse_key
+    return openai_key, llamacloud_key
 
 
 # ---------- Ingestion pipeline ----------
 class DocumentIngestionPipeline:
-    """Load and parse documents from a directory using LlamaParse (or another parser).
+    """Load and parse documents from a directory using a parser.
 
     Usage:
-        pipeline = DocumentIngestionPipeline(data_dir="./data", parser_cls=LlamaParse, parser_kwargs={...})
+        pipeline = DocumentIngestionPipeline(data_dir="./data", parser_cls=YourParser, parser_kwargs={...})
         pdf_files = pipeline.get_pdf_files()
         documents = pipeline.parse_documents(pdf_files)
     """
@@ -195,30 +166,23 @@ def build_auto_index(documents):
     # installing llama_index.
     try:
         from llama_index.core import VectorStoreIndex
-
         index = VectorStoreIndex.from_documents(documents)
         retriever = index.as_retriever(similarity_top_k=15)
         return index, retriever
-    except Exception:
-        logging.warning("llama_index not available; using simple in-memory retriever fallback")
-
+    except Exception as e:
+        logging.warning(f"llama_index not available; using simple in-memory retriever fallback: {e}")
         class SimpleRetriever:
             def __init__(self, docs):
-                # docs: list of document-like objects
                 self._docs = docs
-
             def retrieve(self, query, n_results=15):
-                # very simple substring scoring
                 nodes = []
                 for d in self._docs:
                     text = getattr(d, 'text', str(d))
                     score = 1.0 if query.lower() in text.lower() else 0.0
                     node = types.SimpleNamespace(node=types.SimpleNamespace(text=text, metadata=getattr(d, 'metadata', {})), score=score)
                     nodes.append(node)
-                # sort by score desc
                 nodes.sort(key=lambda n: n.score, reverse=True)
                 return nodes[:n_results]
-
         retriever = SimpleRetriever(documents)
         return None, retriever
 
@@ -363,168 +327,60 @@ def safe_query_with_retry(query_engine, query: str, retries: int = 1, timeout: f
 
 # ---------- Main flow ----------
 def main(data_dir: str = "./data"):
-    # Load keys and configure models
-    openai_key, llamaparse_key = load_api_keys()
+    # Load OpenAI and LlamaCloud keys
+    openai_key, llamacloud_key = load_api_keys()
 
-    # Lazy-import pandas here so importing `app` in lightweight test
-    # environments doesn't require pandas to be installed at collection time.
+    # Set OpenAI API key globally for openai and llama_index
     try:
-        import pandas as pd
+        import openai
+        openai.api_key = openai_key
     except Exception:
-        pd = None
+        logging.warning("Could not set openai.api_key; OpenAI package not available.")
 
-    # Lazy-import and configure LlamaIndex/OpenAI related classes so module import
-    # doesn't fail if those packages aren't installed in test environments.
-    provider = os.environ.get("LLM_PROVIDER", "openai").lower()
-    if provider == "bedrock":
-        try:
-            from llm_bedrock import BedrockLLMAdapter
-
-            bedrock_model = os.environ.get("BEDROCK_MODEL_ID")
-            if not bedrock_model:
-                raise EnvironmentError("BEDROCK_MODEL_ID must be set when LLM_PROVIDER=bedrock")
-
-            # Create a minimal adapter and hook it into LlamaIndex Settings if available
-            try:
-                from llama_index.core import Settings
-
-                # LlamaIndex expects an object implementing a generate-like interface
-                Settings.llm = BedrockLLMAdapter(model_id=bedrock_model, temperature=0.1)
-            except Exception:
-                # If LlamaIndex is not present, expose a global adapter for ad-hoc usage
-                globals()["BEDROCK_ADAPTER"] = BedrockLLMAdapter(model_id=bedrock_model, temperature=0.1)
-        except Exception:
-            logging.exception("Failed to configure Bedrock provider; falling back to OpenAI settings")
-            # fall through to openai configuration below
-            provider = "openai"
-
-    if provider == "openai":
+    # If using llama_index embedding, set key explicitly
+    try:
+        from llama_index.embeddings.openai import OpenAIEmbedding
         from llama_index.core import Settings
-        from llama_index.llms.openai import OpenAI
-        try:
-            from llama_index.embeddings.openai import OpenAIEmbedding
-        except Exception as e:
-            # Helpful diagnostic: list installed "llama" packages and suggest
-            # installing from the project's lockfile. This makes the error clearer
-            # for developers who forgot to install the pinned requirements.
+        Settings.embed_model = OpenAIEmbedding(api_key=openai_key)
+    except Exception:
+        logging.warning("Could not set OpenAIEmbedding with API key; using default embedding model.")
+
+    # Minimal parser for demonstration (parses PDFs as plain text)
+    from llama_index.core.schema import Document
+    import PyPDF2
+    class MinimalPDFParser:
+        def __init__(self):
+            pass
+        def load_data(self, filename):
+            docs = []
             try:
-                import pkg_resources
+                with open(filename, "rb") as f:
+                    reader = PyPDF2.PdfReader(f)
+                    text = "\n".join(page.extract_text() or "" for page in reader.pages)
+                    doc = Document(
+                        id_=filename,
+                        text=text,
+                        metadata={"file_name": filename}
+                    )
+                    docs.append(doc)
+            except Exception as e:
+                logging.warning(f"Failed to parse {filename}: {e}")
+            return docs
 
-                installed_llama = [f"{d.project_name}=={d.version}" for d in pkg_resources.working_set if "llama" in d.project_name.lower()]
-            except Exception:
-                installed_llama = []
-
-            logging.error("Failed to import 'llama_index.embeddings.openai': %s", e)
-            logging.error("Installed llama-related packages: %s", installed_llama or "none found")
-            logging.error("Fix: activate your venv and run: python -m pip install -r requirements-lock.txt")
-            raise
-
-        # Prefer passing the API key explicitly when we have it to avoid
-        # relying on environment state elsewhere. load_api_keys() returns
-        # the key as `openai_key` above.
-        llm_kwargs = {"model": "gpt-4", "temperature": 0.1}
-        embed_kwargs = {"model": "text-embedding-ada-002"}
-        try:
-            if openai_key:
-                llm_kwargs["api_key"] = openai_key
-                embed_kwargs["api_key"] = openai_key
-        except NameError:
-            # Defensive: if for some reason openai_key isn't in scope, continue
-            # but log a warning so users know to provide credentials via env.
-            logging.debug("openai_key not present in scope; relying on environment variables for OpenAI credentials")
-
-        Settings.llm = OpenAI(**llm_kwargs)
-        Settings.embed_model = OpenAIEmbedding(**embed_kwargs)
-        Settings.chunk_size = 512
-        Settings.chunk_overlap = 50
-
-    # Ingestion
-    # Lazily import parser class
-    from llama_parse import LlamaParse
-
-    ingestion = DocumentIngestionPipeline(
-        data_dir=data_dir,
-        parser_cls=LlamaParse,
-        parser_kwargs={
-            "api_key": llamaparse_key,
-            "result_type": "markdown",
-            "verbose": False,
-            "language": "en",
-            "num_workers": 4,
-        },
-        # optional cap for production can be set by environment variable
-        max_docs=int(os.environ.get("MAX_INGEST_DOCS", "0")) or None,
-    )
+    # Run ingestion, indexing, and a sample query
+    ingestion = DocumentIngestionPipeline(data_dir=data_dir, parser_cls=MinimalPDFParser)
     pdf_files = ingestion.get_pdf_files()
     if not pdf_files:
         logging.warning("No PDF files found in %s - exiting", data_dir)
         return
     documents = ingestion.parse_documents(pdf_files)
-
     logging.info("Total document chunks: %d", len(documents))
-
-    # Build indexes
-    auto_index, auto_retriever = build_auto_index(documents)
-    sw_index, sw_retriever, sw_postprocessor = build_sentence_window_index(documents)
-    am_index, am_retriever = build_auto_merging_index(documents)
-
-    # Reranker and query engines (lazy import)
-    from llama_index.core.postprocessor import SentenceTransformerRerank
-    from llama_index.core.query_engine import RetrieverQueryEngine
-
-    reranker = SentenceTransformerRerank(model="cross-encoder/ms-marco-MiniLM-L-2-v2", top_n=5)
-
-    # Query engines
-    sm_query_engine = RetrieverQueryEngine(retriever=sw_retriever, node_postprocessors=[sw_postprocessor, reranker])
-    am_query_engine = RetrieverQueryEngine(retriever=am_retriever, node_postprocessors=[reranker])
-    a_query_engine = RetrieverQueryEngine(retriever=auto_retriever, node_postprocessors=[reranker])
-
-    # Example evaluation: find revenue-related chunks. If `llama_index` is
-    # unavailable we fall back to a simple node-like structure built from the
-    # parsed `documents` so the rest of the evaluation code can run in dev/CI.
-    try:
-        if auto_index is not None:
-            all_nodes = list(auto_index.docstore.docs.values())
-        else:
-            raise AttributeError("auto_index is None, using fallback")
-    except Exception:
-        logging.debug("Falling back to simple node list because auto_index.docstore is not available")
-        all_nodes = [types.SimpleNamespace(text=getattr(d, 'text', str(d)), metadata=getattr(d, 'metadata', {})) for d in documents]
-    revenue_chunks = [n for n in all_nodes if ("revenue" in n.text.lower() or "net revenues" in n.text.lower()) and any(y in n.text for y in ["2020","2021","2022"])]
-    logging.info("Found %d revenue-related chunks", len(revenue_chunks))
-    for n in revenue_chunks[:5]:
-        logging.info(n.text[:300].replace('\n',' '))
-
-    # Simple compare function (returns pandas DataFrame)
-    def compare_retrievers(query: str):
-        results = []
-        engines = [("Sentence Window", sm_query_engine), ("Auto Merging", am_query_engine), ("Standard Auto", a_query_engine)]
-        for name, engine in engines:
-            start = time.time()
-            resp = engine.query(query)
-            elapsed = time.time() - start
-            num_nodes = len(resp.source_nodes)
-            avg_score = sum(n.score for n in resp.source_nodes) / num_nodes if num_nodes else 0
-            results.append({
-                "retriever": name,
-                "response": str(resp),
-                "num_source_nodes": num_nodes,
-                "avg_similarity_score": avg_score,
-                "response_time": elapsed,
-                "response_length": len(str(resp)),
-                "unique_sources": len(set(n.node.metadata.get("file_name","unknown") for n in resp.source_nodes)),
-            })
-        return pd.DataFrame(results)
-
-    # Run a few test queries
-    test_queries = [
-        "What was Coca-Cola's revenue in 2020?",
-        "What are the main risk factors mentioned in the 10-K?",
-    ]
-    all_dfs = [compare_retrievers(q).assign(query=q) for q in test_queries]
-    combined = pd.concat(all_dfs, ignore_index=True)
-    combined.to_csv("retriever_comparison_results.csv", index=False)
-    logging.info("Saved retriever comparison results to retriever_comparison_results.csv")
+    index, retriever = build_auto_index(documents)
+    query = "What is in this document?"
+    results = retriever.retrieve(query)
+    print(f"\nSample query: {query}\n{'='*40}")
+    for i, node in enumerate(results):
+        print(f"Result {i+1}:\n{'-'*20}\n{getattr(node.node, 'text', str(node.node))}\n")
 
 
 def _start_metrics_server(port: int = 8000):
