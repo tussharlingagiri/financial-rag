@@ -204,8 +204,6 @@ def build_chroma_index(documents, persist_directory: str = "./chroma_db"):
         logging.exception("Failed to create chroma index; falling back to in-memory VectorStoreIndex")
         return build_auto_index(documents)
 
-# ---------- Retriever Safe Wrappers (Sync + Async Handling) ----------
-import asyncio
 
 def run_async_query_safe(query_engine, query: str, timeout: float = 10.0):
     try:
