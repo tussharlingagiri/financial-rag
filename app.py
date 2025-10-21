@@ -15,6 +15,10 @@ Notes: install dependencies with `pip install -r requirements.txt` inside a venv
 
 import os
 import logging
+import asyncio
+import threading
+import http.server
+import socketserver
 
 try:
     import nest_asyncio
@@ -273,15 +277,6 @@ def build_chroma_index(documents, persist_directory: str = "./chroma_db"):
 
 
 # ---------- Retriever safe wrapper (sync + async handling) ----------
-import asyncio
-import threading
-import http.server
-import socketserver
-
-import asyncio
-import threading
-import http.server
-import socketserver
 
 def run_async_query_safe(query_engine, query: str, timeout: float = 10.0):
     """Run a query against a query_engine that may be async or sync.
