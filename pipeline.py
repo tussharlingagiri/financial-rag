@@ -3,10 +3,6 @@
 pipeline.py
 
 Minimal, parser-agnostic RAG pipeline using OpenAI API key.
-- Loads API key interactively or from environment
-- Provides DocumentIngestionPipeline (user supplies parser)
-- Includes index/retriever helpers
-- No LlamaParse or LlamaIndex dependencies required for basic usage
 
 Usage:
     from pipeline import DocumentIngestionPipeline, build_auto_index
@@ -17,6 +13,7 @@ Usage:
     index, retriever = build_auto_index(documents)
     response = retriever.retrieve("Your query here")
 """
+import asyncio
 
 import os
 import logging
