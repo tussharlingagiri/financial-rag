@@ -1,3 +1,4 @@
+from typing import List, Optional
 # -*- coding: utf-8 -*-
 """
 pipeline.py
@@ -44,7 +45,7 @@ class DocumentIngestionPipeline:
     """Load and parse documents from a directory using a parser.
     User must supply parser_cls and parser_kwargs.
     """
-    def __init__(self, data_dir: str = "./data", parser_cls=None, parser_kwargs: dict = None, max_docs: int = None):
+    def __init__(self, data_dir: str = "./data", parser_cls=None, parser_kwargs: Optional[dict] = None, max_docs: Optional[int] = None):
         self.data_dir = Path(data_dir)
         self.parser_cls = parser_cls
         self.parser_kwargs = parser_kwargs or {}
@@ -178,15 +179,19 @@ def build_chroma_index(documents, persist_directory: str = "./chroma_db"):
     try:
         client = chromadb.Client()
         coll = client.get_or_create_collection(name="rag_collection")
-        to_upsert = []
+        ids = []
+        docs = []
+        metas = []
         for i, d in enumerate(documents):
             try:
                 text = getattr(d, "text", None) or (d.get_text() if hasattr(d, "get_text") else str(d))
             except Exception:
                 text = str(d)
             meta = getattr(d, "metadata", None) or {}
-            to_upsert.append({"id": str(i), "document": text, "meta": meta})
-        coll.add(to_upsert)
+            ids.append(str(i))
+            docs.append(text)
+            metas.append(meta)
+        coll.add(ids=ids, documents=docs, metadatas=metas)
         class ChromaRetrieverWrapper:
             def __init__(self, collection):
                 self.collection = collection
@@ -233,4 +238,7 @@ def safe_query_with_retry(query_engine, query: str, retries: int = 1, timeout: f
             logging.warning("Query attempt %d failed: %s", attempt, e)
             last_exc = e
             continue
-    raise last_exc
+    if last_exc is not None:
+        raise last_exc
+    else:
+        raise RuntimeError("Unknown error")
