@@ -91,12 +91,19 @@ class DocumentIngestionPipeline:
         # Optional cap on total documents/chunks returned (helps in CI and memory-constrained runs)
         self.max_docs = max_docs
 
-    def get_pdf_files(self) -> List[str]:
-        pdf_files = [str(p) for p in self.data_dir.glob("*.pdf")]
-        logging.info("Found %d PDF files in %s", len(pdf_files), str(self.data_dir))
-        for p in pdf_files:
+
+    def get_supported_files(self) -> List[str]:
+        """Return all supported files (.pdf, .htm, .xml, .xsd, .txt) in the data directory."""
+        exts = ["*.pdf", "*.htm", "*.xml", "*.xsd", "*.txt"]
+        files = []
+        for ext in exts:
+            found = list(self.data_dir.glob(ext))
+            files.extend(found)
+        files = [str(p) for p in files]
+        logging.info("Found %d supported files in %s", len(files), str(self.data_dir))
+        for p in files:
             logging.info("  - %s", p)
-        return pdf_files
+        return files
 
     def parse_documents(self, pdf_files: List[str]):
         if not self.parser_cls:
@@ -346,18 +353,37 @@ def main(data_dir: str = "./data"):
     except Exception:
         logging.warning("Could not set OpenAIEmbedding with API key; using default embedding model.")
 
-    # Minimal parser for demonstration (parses PDFs as plain text)
+
+    # Minimal multi-format parser
     from llama_index.core.schema import Document
     import PyPDF2
-    class MinimalPDFParser:
+    from bs4 import BeautifulSoup
+
+    class MinimalMultiFormatParser:
         def __init__(self):
             pass
         def load_data(self, filename):
+            ext = os.path.splitext(filename)[1].lower()
             docs = []
             try:
-                with open(filename, "rb") as f:
-                    reader = PyPDF2.PdfReader(f)
-                    text = "\n".join(page.extract_text() or "" for page in reader.pages)
+                if ext == ".pdf":
+                    with open(filename, "rb") as f:
+                        reader = PyPDF2.PdfReader(f)
+                        text = "\n".join(page.extract_text() or "" for page in reader.pages)
+                elif ext in [".htm", ".html"]:
+                    with open(filename, "r", encoding="utf-8", errors="ignore") as f:
+                        soup = BeautifulSoup(f, "html.parser")
+                        text = soup.get_text(separator="\n")
+                elif ext in [".xml", ".xsd"]:
+                    with open(filename, "r", encoding="utf-8", errors="ignore") as f:
+                        soup = BeautifulSoup(f, "xml")
+                        text = soup.get_text(separator="\n")
+                elif ext == ".txt":
+                    with open(filename, "r", encoding="utf-8", errors="ignore") as f:
+                        text = f.read()
+                else:
+                    text = ""
+                if text:
                     doc = Document(
                         id_=filename,
                         text=text,
@@ -369,19 +395,20 @@ def main(data_dir: str = "./data"):
             return docs
 
     # Run ingestion, indexing, and a sample query
-    ingestion = DocumentIngestionPipeline(data_dir=data_dir, parser_cls=MinimalPDFParser)
-    pdf_files = ingestion.get_pdf_files()
-    if not pdf_files:
-        logging.warning("No PDF files found in %s - exiting", data_dir)
+    ingestion = DocumentIngestionPipeline(data_dir=data_dir, parser_cls=MinimalMultiFormatParser)
+    all_files = ingestion.get_supported_files()
+    if not all_files:
+        logging.warning("No supported files found in %s - exiting", data_dir)
         return
-    documents = ingestion.parse_documents(pdf_files)
+    documents = ingestion.parse_documents(all_files)
     logging.info("Total document chunks: %d", len(documents))
-    index, retriever = build_auto_index(documents)
+    # Use ChromaDB for persistent storage
+    index, retriever = build_chroma_index(documents, persist_directory="./chroma_db")
     query = "What is in this document?"
     results = retriever.retrieve(query)
     print(f"\nSample query: {query}\n{'='*40}")
     for i, node in enumerate(results):
-        print(f"Result {i+1}:\n{'-'*20}\n{getattr(node.node, 'text', str(node.node))}\n")
+        print(f"Result {i+1}:\n{'-'*20}\n{getattr(node.node, 'text', str(node.node))[:1000]}\n")
 
 
 def _start_metrics_server(port: int = 8000):

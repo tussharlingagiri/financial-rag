@@ -1,0 +1,986 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--XBRL Document Created with the Workiva Platform-->
+<!--Copyright 2025 Workiva-->
+<!--r:c5e492a1-70ed-4d79-a51c-a13fcf639ea1,g:03efdbef-393e-4977-adb3-cdb17afee524-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:link="http://www.xbrl.org/2003/linkbase" xmlns:ko="http://www.thecocacolacompany.com/20241231" xmlns:xbrli="http://www.xbrl.org/2003/instance" xmlns:dtr-types1="http://www.xbrl.org/dtr/type/2020-01-21" xmlns:dtr-types="http://www.xbrl.org/dtr/type/2022-03-31" xmlns:xbrldt="http://xbrl.org/2005/xbrldt" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://www.thecocacolacompany.com/20241231">
+  <xs:import namespace="http://fasb.org/srt/2024" schemaLocation="https://xbrl.fasb.org/srt/2024/elts/srt-2024.xsd"/>
+  <xs:import namespace="http://fasb.org/us-gaap/2024" schemaLocation="https://xbrl.fasb.org/us-gaap/2024/elts/us-gaap-2024.xsd"/>
+  <xs:import namespace="http://www.xbrl.org/2003/instance" schemaLocation="http://www.xbrl.org/2003/xbrl-instance-2003-12-31.xsd"/>
+  <xs:import namespace="http://www.xbrl.org/2003/linkbase" schemaLocation="http://www.xbrl.org/2003/xbrl-linkbase-2003-12-31.xsd"/>
+  <xs:import namespace="http://www.xbrl.org/dtr/type/2020-01-21" schemaLocation="https://www.xbrl.org/dtr/type/2020-01-21/types.xsd"/>
+  <xs:import namespace="http://www.xbrl.org/dtr/type/2022-03-31" schemaLocation="https://www.xbrl.org/dtr/type/2022-03-31/types.xsd"/>
+  <xs:import namespace="http://xbrl.org/2005/xbrldt" schemaLocation="http://www.xbrl.org/2005/xbrldt-2005.xsd"/>
+  <xs:import namespace="http://xbrl.sec.gov/country/2024" schemaLocation="https://xbrl.sec.gov/country/2024/country-2024.xsd"/>
+  <xs:import namespace="http://xbrl.sec.gov/cyd-af-sub/2024" schemaLocation="https://xbrl.sec.gov/cyd/2024/cyd-af-sub-2024.xsd"/>
+  <xs:import namespace="http://xbrl.sec.gov/dei/2024" schemaLocation="https://xbrl.sec.gov/dei/2024/dei-2024.xsd"/>
+  <xs:import namespace="http://xbrl.sec.gov/ecd/2024" schemaLocation="https://xbrl.sec.gov/ecd/2024/ecd-2024.xsd"/>
+  <xs:annotation>
+    <xs:appinfo>
+      <link:linkbaseRef xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="http://www.w3.org/1999/xlink/properties/linkbase" xlink:href="ko-20241231_pre.xml" xlink:role="http://www.xbrl.org/2003/role/presentationLinkbaseRef" xlink:type="simple"/>
+      <link:linkbaseRef xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="http://www.w3.org/1999/xlink/properties/linkbase" xlink:href="ko-20241231_def.xml" xlink:role="http://www.xbrl.org/2003/role/definitionLinkbaseRef" xlink:type="simple"/>
+      <link:linkbaseRef xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="http://www.w3.org/1999/xlink/properties/linkbase" xlink:href="ko-20241231_lab.xml" xlink:role="http://www.xbrl.org/2003/role/labelLinkbaseRef" xlink:type="simple"/>
+      <link:linkbaseRef xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="http://www.w3.org/1999/xlink/properties/linkbase" xlink:href="ko-20241231_cal.xml" xlink:role="http://www.xbrl.org/2003/role/calculationLinkbaseRef" xlink:type="simple"/>
+      <link:roleType id="DOCUMENTANDENTITYINFORMATIONDocument" roleURI="http://www.thecocacolacompany.com/role/DOCUMENTANDENTITYINFORMATIONDocument">
+        <link:definition>0000001 - Document - DOCUMENT AND ENTITY INFORMATION Document</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="AUDITINFORMATION" roleURI="http://www.thecocacolacompany.com/role/AUDITINFORMATION">
+        <link:definition>0000002 - Document - AUDIT INFORMATION</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="CONSOLIDATEDSTATEMENTSOFINCOME" roleURI="http://www.thecocacolacompany.com/role/CONSOLIDATEDSTATEMENTSOFINCOME">
+        <link:definition>9952151 - Statement - CONSOLIDATED STATEMENTS OF INCOME</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="CONSOLIDATEDSTATEMENTSOFCOMPREHENSIVEINCOME" roleURI="http://www.thecocacolacompany.com/role/CONSOLIDATEDSTATEMENTSOFCOMPREHENSIVEINCOME">
+        <link:definition>9952152 - Statement - CONSOLIDATED STATEMENTS OF COMPREHENSIVE INCOME</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="CONSOLIDATEDBALANCESHEETS" roleURI="http://www.thecocacolacompany.com/role/CONSOLIDATEDBALANCESHEETS">
+        <link:definition>9952153 - Statement - CONSOLIDATED BALANCE SHEETS</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="CONSOLIDATEDBALANCESHEETSBALANCESHEETPARENTHETICAL" roleURI="http://www.thecocacolacompany.com/role/CONSOLIDATEDBALANCESHEETSBALANCESHEETPARENTHETICAL">
+        <link:definition>9952154 - Statement - CONSOLIDATED BALANCE SHEETS BALANCE SHEET PARENTHETICAL</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="CONSOLIDATEDSTATEMENTSOFCASHFLOWS" roleURI="http://www.thecocacolacompany.com/role/CONSOLIDATEDSTATEMENTSOFCASHFLOWS">
+        <link:definition>9952155 - Statement - CONSOLIDATED STATEMENTS OF CASH FLOWS</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="CONSOLIDATEDSTATEMENTSOFSHAREOWNERSEQUITY" roleURI="http://www.thecocacolacompany.com/role/CONSOLIDATEDSTATEMENTSOFSHAREOWNERSEQUITY">
+        <link:definition>9952156 - Statement - CONSOLIDATED STATEMENTS OF SHAREOWNERS' EQUITY</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="CONSOLIDATEDSTATEMENTSOFSHAREOWNERSEQUITYSHAREOWNERSEQUITYPARENTHETICAL" roleURI="http://www.thecocacolacompany.com/role/CONSOLIDATEDSTATEMENTSOFSHAREOWNERSEQUITYSHAREOWNERSEQUITYPARENTHETICAL">
+        <link:definition>9952157 - Statement - CONSOLIDATED STATEMENTS OF SHAREOWNERS' EQUITY SHAREOWNERS' EQUITY PARENTHETICAL</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="BUSINESSANDSUMMARYOFSIGNIFICANTACCOUNTINGPOLICIES" roleURI="http://www.thecocacolacompany.com/role/BUSINESSANDSUMMARYOFSIGNIFICANTACCOUNTINGPOLICIES">
+        <link:definition>9952158 - Disclosure - BUSINESS AND SUMMARY OF SIGNIFICANT ACCOUNTING POLICIES</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="ACQUISITIONSANDDIVESTITURES" roleURI="http://www.thecocacolacompany.com/role/ACQUISITIONSANDDIVESTITURES">
+        <link:definition>9952159 - Disclosure - ACQUISITIONS AND DIVESTITURES</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="NETOPERATINGREVENUES" roleURI="http://www.thecocacolacompany.com/role/NETOPERATINGREVENUES">
+        <link:definition>9952160 - Disclosure - NET OPERATING REVENUES</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="INVESTMENTS" roleURI="http://www.thecocacolacompany.com/role/INVESTMENTS">
+        <link:definition>9952161 - Disclosure - INVESTMENTS</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="HEDGINGTRANSACTIONSANDDERIVATIVEFINANCIALINSTRUMENTS" roleURI="http://www.thecocacolacompany.com/role/HEDGINGTRANSACTIONSANDDERIVATIVEFINANCIALINSTRUMENTS">
+        <link:definition>9952162 - Disclosure - HEDGING TRANSACTIONS AND DERIVATIVE FINANCIAL INSTRUMENTS</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="EQUITYMETHODINVESTMENTS" roleURI="http://www.thecocacolacompany.com/role/EQUITYMETHODINVESTMENTS">
+        <link:definition>9952163 - Disclosure - EQUITY METHOD INVESTMENTS</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="GOODWILL" roleURI="http://www.thecocacolacompany.com/role/GOODWILL">
+        <link:definition>9952164 - Disclosure - GOODWILL</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="ACCOUNTSPAYABLEANDACCRUEDEXPENSES" roleURI="http://www.thecocacolacompany.com/role/ACCOUNTSPAYABLEANDACCRUEDEXPENSES">
+        <link:definition>9952165 - Disclosure - ACCOUNTS PAYABLE AND ACCRUED EXPENSES</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="SUPPLYCHAINFINANCEPROGRAM" roleURI="http://www.thecocacolacompany.com/role/SUPPLYCHAINFINANCEPROGRAM">
+        <link:definition>9952166 - Disclosure - SUPPLY CHAIN FINANCE PROGRAM</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="LEASES" roleURI="http://www.thecocacolacompany.com/role/LEASES">
+        <link:definition>9952167 - Disclosure - LEASES</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="DEBTANDBORROWINGARRANGEMENTS" roleURI="http://www.thecocacolacompany.com/role/DEBTANDBORROWINGARRANGEMENTS">
+        <link:definition>9952168 - Disclosure - DEBT AND BORROWING ARRANGEMENTS</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="COMMITMENTSANDCONTINGENCIES" roleURI="http://www.thecocacolacompany.com/role/COMMITMENTSANDCONTINGENCIES">
+        <link:definition>9952169 - Disclosure - COMMITMENTS AND CONTINGENCIES</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="STOCKBASEDCOMPENSATIONPLANS" roleURI="http://www.thecocacolacompany.com/role/STOCKBASEDCOMPENSATIONPLANS">
+        <link:definition>9952170 - Disclosure - STOCK-BASED COMPENSATION PLANS</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="PENSIONANDOTHERPOSTRETIREMENTBENEFITPLANS" roleURI="http://www.thecocacolacompany.com/role/PENSIONANDOTHERPOSTRETIREMENTBENEFITPLANS">
+        <link:definition>9952171 - Disclosure - PENSION AND OTHER POSTRETIREMENT BENEFIT PLANS</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="INCOMETAXES" roleURI="http://www.thecocacolacompany.com/role/INCOMETAXES">
+        <link:definition>9952172 - Disclosure - INCOME TAXES</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="OTHERCOMPREHENSIVEINCOME" roleURI="http://www.thecocacolacompany.com/role/OTHERCOMPREHENSIVEINCOME">
+        <link:definition>9952173 - Disclosure - OTHER COMPREHENSIVE INCOME</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="FAIRVALUEMEASUREMENTS" roleURI="http://www.thecocacolacompany.com/role/FAIRVALUEMEASUREMENTS">
+        <link:definition>9952174 - Disclosure - FAIR VALUE MEASUREMENTS</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="SIGNIFICANTOPERATINGANDNONOPERATINGITEMS" roleURI="http://www.thecocacolacompany.com/role/SIGNIFICANTOPERATINGANDNONOPERATINGITEMS">
+        <link:definition>9952175 - Disclosure - SIGNIFICANT OPERATING AND NONOPERATING ITEMS</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="RESTRUCTURING" roleURI="http://www.thecocacolacompany.com/role/RESTRUCTURING">
+        <link:definition>9952176 - Disclosure - RESTRUCTURING</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="OPERATINGSEGMENTS" roleURI="http://www.thecocacolacompany.com/role/OPERATINGSEGMENTS">
+        <link:definition>9952177 - Disclosure - OPERATING SEGMENTS</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="NETCHANGEINOPERATINGASSETSANDLIABILITIES" roleURI="http://www.thecocacolacompany.com/role/NETCHANGEINOPERATINGASSETSANDLIABILITIES">
+        <link:definition>9952178 - Disclosure - NET CHANGE IN OPERATING ASSETS AND LIABILITIES</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="BUSINESSANDSUMMARYOFSIGNIFICANTACCOUNTINGPOLICIESPolicies" roleURI="http://www.thecocacolacompany.com/role/BUSINESSANDSUMMARYOFSIGNIFICANTACCOUNTINGPOLICIESPolicies">
+        <link:definition>9955511 - Disclosure - BUSINESS AND SUMMARY OF SIGNIFICANT ACCOUNTING POLICIES (Policies)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="LEASESPolicies" roleURI="http://www.thecocacolacompany.com/role/LEASESPolicies">
+        <link:definition>9955512 - Disclosure - LEASES (Policies)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="BUSINESSANDSUMMARYOFSIGNIFICANTACCOUNTINGPOLICIESTables" roleURI="http://www.thecocacolacompany.com/role/BUSINESSANDSUMMARYOFSIGNIFICANTACCOUNTINGPOLICIESTables">
+        <link:definition>9955513 - Disclosure - BUSINESS AND SUMMARY OF SIGNIFICANT ACCOUNTING POLICIES (Tables)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="ACQUISITIONSANDDIVESTITURESTables" roleURI="http://www.thecocacolacompany.com/role/ACQUISITIONSANDDIVESTITURESTables">
+        <link:definition>9955514 - Disclosure - ACQUISITIONS AND DIVESTITURES (Tables)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="NETOPERATINGREVENUESTables" roleURI="http://www.thecocacolacompany.com/role/NETOPERATINGREVENUESTables">
+        <link:definition>9955515 - Disclosure - NET OPERATING REVENUES (Tables)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="INVESTMENTSTables" roleURI="http://www.thecocacolacompany.com/role/INVESTMENTSTables">
+        <link:definition>9955516 - Disclosure - INVESTMENTS (Tables)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="HEDGINGTRANSACTIONSANDDERIVATIVEFINANCIALINSTRUMENTSTables" roleURI="http://www.thecocacolacompany.com/role/HEDGINGTRANSACTIONSANDDERIVATIVEFINANCIALINSTRUMENTSTables">
+        <link:definition>9955517 - Disclosure - HEDGING TRANSACTIONS AND DERIVATIVE FINANCIAL INSTRUMENTS (Tables)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="EQUITYMETHODINVESTMENTSTables" roleURI="http://www.thecocacolacompany.com/role/EQUITYMETHODINVESTMENTSTables">
+        <link:definition>9955518 - Disclosure - EQUITY METHOD INVESTMENTS (Tables)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="GOODWILLTables" roleURI="http://www.thecocacolacompany.com/role/GOODWILLTables">
+        <link:definition>9955519 - Disclosure - GOODWILL (Tables)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="ACCOUNTSPAYABLEANDACCRUEDEXPENSESTables" roleURI="http://www.thecocacolacompany.com/role/ACCOUNTSPAYABLEANDACCRUEDEXPENSESTables">
+        <link:definition>9955520 - Disclosure - ACCOUNTS PAYABLE AND ACCRUED EXPENSES (Tables)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="SUPPLYCHAINFINANCEPROGRAMTables" roleURI="http://www.thecocacolacompany.com/role/SUPPLYCHAINFINANCEPROGRAMTables">
+        <link:definition>9955521 - Disclosure - SUPPLY CHAIN FINANCE PROGRAM (Tables)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="LEASESTables" roleURI="http://www.thecocacolacompany.com/role/LEASESTables">
+        <link:definition>9955522 - Disclosure - LEASES (Tables)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="DEBTANDBORROWINGARRANGEMENTSTables" roleURI="http://www.thecocacolacompany.com/role/DEBTANDBORROWINGARRANGEMENTSTables">
+        <link:definition>9955523 - Disclosure - DEBT AND BORROWING ARRANGEMENTS (Tables)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="STOCKBASEDCOMPENSATIONPLANSTables" roleURI="http://www.thecocacolacompany.com/role/STOCKBASEDCOMPENSATIONPLANSTables">
+        <link:definition>9955524 - Disclosure - STOCK-BASED COMPENSATION PLANS (Tables)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="PENSIONANDOTHERPOSTRETIREMENTBENEFITPLANSTables" roleURI="http://www.thecocacolacompany.com/role/PENSIONANDOTHERPOSTRETIREMENTBENEFITPLANSTables">
+        <link:definition>9955525 - Disclosure - PENSION AND OTHER POSTRETIREMENT BENEFIT PLANS (Tables)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="INCOMETAXESTables" roleURI="http://www.thecocacolacompany.com/role/INCOMETAXESTables">
+        <link:definition>9955526 - Disclosure - INCOME TAXES (Tables)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="OTHERCOMPREHENSIVEINCOMETables" roleURI="http://www.thecocacolacompany.com/role/OTHERCOMPREHENSIVEINCOMETables">
+        <link:definition>9955527 - Disclosure - OTHER COMPREHENSIVE INCOME (Tables)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="FAIRVALUEMEASUREMENTSTables" roleURI="http://www.thecocacolacompany.com/role/FAIRVALUEMEASUREMENTSTables">
+        <link:definition>9955528 - Disclosure - FAIR VALUE MEASUREMENTS (Tables)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="RESTRUCTURINGTables" roleURI="http://www.thecocacolacompany.com/role/RESTRUCTURINGTables">
+        <link:definition>9955529 - Disclosure - RESTRUCTURING (Tables)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="OPERATINGSEGMENTSTables" roleURI="http://www.thecocacolacompany.com/role/OPERATINGSEGMENTSTables">
+        <link:definition>9955530 - Disclosure - OPERATING SEGMENTS (Tables)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="NETCHANGEINOPERATINGASSETSANDLIABILITIESTables" roleURI="http://www.thecocacolacompany.com/role/NETCHANGEINOPERATINGASSETSANDLIABILITIESTables">
+        <link:definition>9955531 - Disclosure - NET CHANGE IN OPERATING ASSETS AND LIABILITIES (Tables)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="BUSINESSANDSUMMARYOFSIGNIFICANTACCOUNTINGPOLICIESCASHANDCASHEQUIVALENTSDetails" roleURI="http://www.thecocacolacompany.com/role/BUSINESSANDSUMMARYOFSIGNIFICANTACCOUNTINGPOLICIESCASHANDCASHEQUIVALENTSDetails">
+        <link:definition>9955532 - Disclosure - BUSINESS AND SUMMARY OF SIGNIFICANT ACCOUNTING POLICIES - CASH AND CASH EQUIVALENTS (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="BUSINESSANDSUMMARYOFSIGNIFICANTACCOUNTINGPOLICIESINVENTORIESDetails" roleURI="http://www.thecocacolacompany.com/role/BUSINESSANDSUMMARYOFSIGNIFICANTACCOUNTINGPOLICIESINVENTORIESDetails">
+        <link:definition>9955533 - Disclosure - BUSINESS AND SUMMARY OF SIGNIFICANT ACCOUNTING POLICIES - INVENTORIES (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="BUSINESSANDSUMMARYOFSIGNIFICANTACCOUNTINGPOLICIESPROPERTYPLANTEQUIPMENTDetails" roleURI="http://www.thecocacolacompany.com/role/BUSINESSANDSUMMARYOFSIGNIFICANTACCOUNTINGPOLICIESPROPERTYPLANTEQUIPMENTDetails">
+        <link:definition>9955534 - Disclosure - BUSINESS AND SUMMARY OF SIGNIFICANT ACCOUNTING POLICIES - PROPERTY, PLANT, EQUIPMENT (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="BUSINESSANDSUMMARYOFSIGNIFICANTACCOUNTINGPOLICIESNARRATIVEDetails" roleURI="http://www.thecocacolacompany.com/role/BUSINESSANDSUMMARYOFSIGNIFICANTACCOUNTINGPOLICIESNARRATIVEDetails">
+        <link:definition>9955535 - Disclosure - BUSINESS AND SUMMARY OF SIGNIFICANT ACCOUNTING POLICIES - NARRATIVE (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="ACQUISITIONSANDDIVESTITURESNARRATIVEDetails" roleURI="http://www.thecocacolacompany.com/role/ACQUISITIONSANDDIVESTITURESNARRATIVEDetails">
+        <link:definition>9955536 - Disclosure - ACQUISITIONS AND DIVESTITURES - NARRATIVE (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="ACQUISITIONSANDDIVESTITURESHELDFORSALEASSETSANDLIABILITIESDetails" roleURI="http://www.thecocacolacompany.com/role/ACQUISITIONSANDDIVESTITURESHELDFORSALEASSETSANDLIABILITIESDetails">
+        <link:definition>9955537 - Disclosure - ACQUISITIONS AND DIVESTITURES - HELD FOR SALE ASSETS AND LIABILITIES (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="NETOPERATINGREVENUESDetails" roleURI="http://www.thecocacolacompany.com/role/NETOPERATINGREVENUESDetails">
+        <link:definition>9955538 - Disclosure - NET OPERATING REVENUES (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="INVESTMENTSCarryingValueofEquitySecuritiesDetails" roleURI="http://www.thecocacolacompany.com/role/INVESTMENTSCarryingValueofEquitySecuritiesDetails">
+        <link:definition>9955539 - Disclosure - INVESTMENTS - Carrying Value of Equity Securities (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="INVESTMENTSUnrealizedGainLossRecognizedRelatedtoEquitySecuritiesDetails" roleURI="http://www.thecocacolacompany.com/role/INVESTMENTSUnrealizedGainLossRecognizedRelatedtoEquitySecuritiesDetails">
+        <link:definition>9955540 - Disclosure - INVESTMENTS - Unrealized Gain (Loss) Recognized Related to Equity Securities (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="INVESTMENTSDebtSecuritiesDetails" roleURI="http://www.thecocacolacompany.com/role/INVESTMENTSDebtSecuritiesDetails">
+        <link:definition>9955541 - Disclosure - INVESTMENTS - Debt Securities (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="INVESTMENTSBalanceSheetClassificationDetails" roleURI="http://www.thecocacolacompany.com/role/INVESTMENTSBalanceSheetClassificationDetails">
+        <link:definition>9955542 - Disclosure - INVESTMENTS - Balance Sheet Classification (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="INVESTMENTSContractualMaturityofAvailableforSaleDebtSecuritiesDetails" roleURI="http://www.thecocacolacompany.com/role/INVESTMENTSContractualMaturityofAvailableforSaleDebtSecuritiesDetails">
+        <link:definition>9955543 - Disclosure - INVESTMENTS - Contractual Maturity of Available for Sale Debt Securities (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="INVESTMENTSSaleandorMaturityofAvailableforSaleSecuritiesDetails" roleURI="http://www.thecocacolacompany.com/role/INVESTMENTSSaleandorMaturityofAvailableforSaleSecuritiesDetails">
+        <link:definition>9955544 - Disclosure - INVESTMENTS - Sale and/or Maturity of Available-for-Sale Securities (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="INVESTMENTSNarrativeDetails" roleURI="http://www.thecocacolacompany.com/role/INVESTMENTSNarrativeDetails">
+        <link:definition>9955545 - Disclosure - INVESTMENTS - Narrative (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="HEDGINGTRANSACTIONSANDDERIVATIVEFINANCIALINSTRUMENTSFairValueofDerivativeInstrumentsDesignedandQualifiedasHedgingRelationshipsDetails" roleURI="http://www.thecocacolacompany.com/role/HEDGINGTRANSACTIONSANDDERIVATIVEFINANCIALINSTRUMENTSFairValueofDerivativeInstrumentsDesignedandQualifiedasHedgingRelationshipsDetails">
+        <link:definition>9955546 - Disclosure - HEDGING TRANSACTIONS AND DERIVATIVE FINANCIAL INSTRUMENTS - Fair Value of Derivative Instruments Designed and Qualified as Hedging Relationships (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="HEDGINGTRANSACTIONSANDDERIVATIVEFINANCIALINSTRUMENTSFairValueofDerivativeInstrumentsNotDesignatedasHedgingInstrumentsDetails" roleURI="http://www.thecocacolacompany.com/role/HEDGINGTRANSACTIONSANDDERIVATIVEFINANCIALINSTRUMENTSFairValueofDerivativeInstrumentsNotDesignatedasHedgingInstrumentsDetails">
+        <link:definition>9955547 - Disclosure - HEDGING TRANSACTIONS AND DERIVATIVE FINANCIAL INSTRUMENTS - Fair Value of Derivative Instruments Not Designated as Hedging Instruments (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="HEDGINGTRANSACTIONSANDDERIVATIVEFINANCIALINSTRUMENTSCashFlowHedgesIncludedinOCIAOCIandEarningsDetails" roleURI="http://www.thecocacolacompany.com/role/HEDGINGTRANSACTIONSANDDERIVATIVEFINANCIALINSTRUMENTSCashFlowHedgesIncludedinOCIAOCIandEarningsDetails">
+        <link:definition>9955548 - Disclosure - HEDGING TRANSACTIONS AND DERIVATIVE FINANCIAL INSTRUMENTS - Cash Flow Hedges Included in OCI, AOCI and Earnings (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="HEDGINGTRANSACTIONSANDDERIVATIVEFINANCIALINSTRUMENTSAmountsRelatedtoDerivativesDesignatedasFairValueHedgesDetails" roleURI="http://www.thecocacolacompany.com/role/HEDGINGTRANSACTIONSANDDERIVATIVEFINANCIALINSTRUMENTSAmountsRelatedtoDerivativesDesignatedasFairValueHedgesDetails">
+        <link:definition>9955549 - Disclosure - HEDGING TRANSACTIONS AND DERIVATIVE FINANCIAL INSTRUMENTS - Amounts Related to Derivatives Designated as Fair Value Hedges (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="HEDGINGTRANSACTIONSANDDERIVATIVEFINANCIALINSTRUMENTSAmountsRelatedtoDerivativesDesignatedasNetInvestmentHedgesDetails" roleURI="http://www.thecocacolacompany.com/role/HEDGINGTRANSACTIONSANDDERIVATIVEFINANCIALINSTRUMENTSAmountsRelatedtoDerivativesDesignatedasNetInvestmentHedgesDetails">
+        <link:definition>9955550 - Disclosure - HEDGING TRANSACTIONS AND DERIVATIVE FINANCIAL INSTRUMENTS - Amounts Related to Derivatives Designated as Net Investment Hedges (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="HEDGINGTRANSACTIONSANDDERIVATIVEFINANCIALINSTRUMENTSDerivativesNotDesignatedasHedgingInstrumentsImpactonEarningsDetails" roleURI="http://www.thecocacolacompany.com/role/HEDGINGTRANSACTIONSANDDERIVATIVEFINANCIALINSTRUMENTSDerivativesNotDesignatedasHedgingInstrumentsImpactonEarningsDetails">
+        <link:definition>9955551 - Disclosure - HEDGING TRANSACTIONS AND DERIVATIVE FINANCIAL INSTRUMENTS - Derivatives Not Designated as Hedging Instruments Impact on Earnings (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="HEDGINGTRANSACTIONSANDDERIVATIVEFINANCIALINSTRUMENTSNarrativeDetails" roleURI="http://www.thecocacolacompany.com/role/HEDGINGTRANSACTIONSANDDERIVATIVEFINANCIALINSTRUMENTSNarrativeDetails">
+        <link:definition>9955552 - Disclosure - HEDGING TRANSACTIONS AND DERIVATIVE FINANCIAL INSTRUMENTS - Narrative (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="EQUITYMETHODINVESTMENTSSummaryoffinancialinformationforequitymethodinvesteesDetails" roleURI="http://www.thecocacolacompany.com/role/EQUITYMETHODINVESTMENTSSummaryoffinancialinformationforequitymethodinvesteesDetails">
+        <link:definition>9955553 - Disclosure - EQUITY METHOD INVESTMENTS - Summary of financial information for equity method investees (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="EQUITYMETHODINVESTMENTSEquityMethodInvestmentsFairValueandCarryingValueDetails" roleURI="http://www.thecocacolacompany.com/role/EQUITYMETHODINVESTMENTSEquityMethodInvestmentsFairValueandCarryingValueDetails">
+        <link:definition>9955554 - Disclosure - EQUITY METHOD INVESTMENTS - Equity Method Investments Fair Value and Carrying Value (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="EQUITYMETHODINVESTMENTSNarrativeDetails" roleURI="http://www.thecocacolacompany.com/role/EQUITYMETHODINVESTMENTSNarrativeDetails">
+        <link:definition>9955555 - Disclosure - EQUITY METHOD INVESTMENTS - Narrative (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="GOODWILLCarryingValueofGoodwillbyOperatingSegmentDetails" roleURI="http://www.thecocacolacompany.com/role/GOODWILLCarryingValueofGoodwillbyOperatingSegmentDetails">
+        <link:definition>9955556 - Disclosure - GOODWILL - Carrying Value of Goodwill by Operating Segment (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="ACCOUNTSPAYABLEANDACCRUEDEXPENSESDetails" roleURI="http://www.thecocacolacompany.com/role/ACCOUNTSPAYABLEANDACCRUEDEXPENSESDetails">
+        <link:definition>9955557 - Disclosure - ACCOUNTS PAYABLE AND ACCRUED EXPENSES (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="SUPPLYCHAINFINANCEPROGRAMDetails" roleURI="http://www.thecocacolacompany.com/role/SUPPLYCHAINFINANCEPROGRAMDetails">
+        <link:definition>9955558 - Disclosure - SUPPLY CHAIN FINANCE PROGRAM (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="LEASESLesseeOperatingLeaseBalanceSheetInformationDetails" roleURI="http://www.thecocacolacompany.com/role/LEASESLesseeOperatingLeaseBalanceSheetInformationDetails">
+        <link:definition>9955559 - Disclosure - LEASES - Lessee Operating Lease Balance Sheet Information (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="LEASESLesseeOperatingLeaseWeightedAverageRemainingLeaseTermandDiscountRateDetails" roleURI="http://www.thecocacolacompany.com/role/LEASESLesseeOperatingLeaseWeightedAverageRemainingLeaseTermandDiscountRateDetails">
+        <link:definition>9955560 - Disclosure - LEASES - Lessee Operating Lease Weighted Average Remaining Lease Term and Discount Rate (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="LEASESLesseeOperatingLeaseLiabilityMaturityDetails" roleURI="http://www.thecocacolacompany.com/role/LEASESLesseeOperatingLeaseLiabilityMaturityDetails">
+        <link:definition>9955561 - Disclosure - LEASES - Lessee Operating Lease Liability Maturity (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="LEASESNarrativeDetails" roleURI="http://www.thecocacolacompany.com/role/LEASESNarrativeDetails">
+        <link:definition>9955562 - Disclosure - LEASES - Narrative (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="DEBTANDBORROWINGARRANGEMENTSComponentsofLongTermDebtDetails" roleURI="http://www.thecocacolacompany.com/role/DEBTANDBORROWINGARRANGEMENTSComponentsofLongTermDebtDetails">
+        <link:definition>9955563 - Disclosure - DEBT AND BORROWING ARRANGEMENTS - Components of Long-Term Debt (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="DEBTANDBORROWINGARRANGEMENTSScheduleofMaturitiesofLongTermDebtDetails" roleURI="http://www.thecocacolacompany.com/role/DEBTANDBORROWINGARRANGEMENTSScheduleofMaturitiesofLongTermDebtDetails">
+        <link:definition>9955564 - Disclosure - DEBT AND BORROWING ARRANGEMENTS - Schedule of Maturities of Long-Term Debt (Details )</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="DEBTANDBORROWINGARRANGEMENTSShortTermBorrowingsNarrativeDetails" roleURI="http://www.thecocacolacompany.com/role/DEBTANDBORROWINGARRANGEMENTSShortTermBorrowingsNarrativeDetails">
+        <link:definition>9955565 - Disclosure - DEBT AND BORROWING ARRANGEMENTS - Short-Term Borrowings Narrative (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="DEBTANDBORROWINGARRANGEMENTSLongTermDebtNarrativeDetails" roleURI="http://www.thecocacolacompany.com/role/DEBTANDBORROWINGARRANGEMENTSLongTermDebtNarrativeDetails">
+        <link:definition>9955566 - Disclosure - DEBT AND BORROWING ARRANGEMENTS - Long-Term Debt Narrative (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="COMMITMENTSANDCONTINGENCIESDetails" roleURI="http://www.thecocacolacompany.com/role/COMMITMENTSANDCONTINGENCIESDetails">
+        <link:definition>9955567 - Disclosure - COMMITMENTS AND CONTINGENCIES (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="STOCKBASEDCOMPENSATIONPLANSWeightedaveragefairvalueofoptionsgrantedandtheweightedaverageassumptionsusedintheBlackScholesMertonoptionpricingmodelforsuchgrantsDetails" roleURI="http://www.thecocacolacompany.com/role/STOCKBASEDCOMPENSATIONPLANSWeightedaveragefairvalueofoptionsgrantedandtheweightedaverageassumptionsusedintheBlackScholesMertonoptionpricingmodelforsuchgrantsDetails">
+        <link:definition>9955568 - Disclosure - STOCK-BASED COMPENSATION PLANS - Weighted-average fair value of options granted and the weighted-average assumptions used in the Black Scholes Merton option pricing model for such grants (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="STOCKBASEDCOMPENSATIONPLANSStockOptionActivityDetails" roleURI="http://www.thecocacolacompany.com/role/STOCKBASEDCOMPENSATIONPLANSStockOptionActivityDetails">
+        <link:definition>9955569 - Disclosure - STOCK-BASED COMPENSATION PLANS - Stock Option Activity (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="STOCKBASEDCOMPENSATIONPLANSSummaryofinformationaboutoutstandingnonvestedperformanceshareunitsbasedontargetawardlevelsDetails" roleURI="http://www.thecocacolacompany.com/role/STOCKBASEDCOMPENSATIONPLANSSummaryofinformationaboutoutstandingnonvestedperformanceshareunitsbasedontargetawardlevelsDetails">
+        <link:definition>9955570 - Disclosure - STOCK-BASED COMPENSATION PLANS - Summary of information about outstanding nonvested performance share units based on target award levels (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="STOCKBASEDCOMPENSATIONPLANSSummaryofinformationaboutvestedperformanceshareunitsbasedonthecertifiedawardlevelDetails" roleURI="http://www.thecocacolacompany.com/role/STOCKBASEDCOMPENSATIONPLANSSummaryofinformationaboutvestedperformanceshareunitsbasedonthecertifiedawardlevelDetails">
+        <link:definition>9955571 - Disclosure - STOCK-BASED COMPENSATION PLANS - Summary of information about vested performance share units based on the certified award level (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="STOCKBASEDCOMPENSATIONPLANSSummaryofinformationaboutoutstandingnonvestedtimebasedrestrictedstockandrestrictedstockunitsDetails" roleURI="http://www.thecocacolacompany.com/role/STOCKBASEDCOMPENSATIONPLANSSummaryofinformationaboutoutstandingnonvestedtimebasedrestrictedstockandrestrictedstockunitsDetails">
+        <link:definition>9955572 - Disclosure - STOCK-BASED COMPENSATION PLANS - Summary of information about outstanding nonvested time-based restricted stock and restricted stock units (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="STOCKBASEDCOMPENSATIONPLANSNarrativeDetails" roleURI="http://www.thecocacolacompany.com/role/STOCKBASEDCOMPENSATIONPLANSNarrativeDetails">
+        <link:definition>9955573 - Disclosure - STOCK-BASED COMPENSATION PLANS - Narrative (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="PENSIONANDOTHERPOSTRETIREMENTBENEFITPLANSChangesinbenefitobligationsandthefairvalueofplanassetsforourpensionandotherpostretirementbenefitplansDetails" roleURI="http://www.thecocacolacompany.com/role/PENSIONANDOTHERPOSTRETIREMENTBENEFITPLANSChangesinbenefitobligationsandthefairvalueofplanassetsforourpensionandotherpostretirementbenefitplansDetails">
+        <link:definition>9955574 - Disclosure - PENSION AND OTHER POSTRETIREMENT BENEFIT PLANS - Changes in benefit obligations and the fair value of plan assets for our pension and other postretirement benefit plans (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="PENSIONANDOTHERPOSTRETIREMENTBENEFITPLANSPensionandotherbenefitamountsrecognizedinconsolidatedbalancesheetsDetails" roleURI="http://www.thecocacolacompany.com/role/PENSIONANDOTHERPOSTRETIREMENTBENEFITPLANSPensionandotherbenefitamountsrecognizedinconsolidatedbalancesheetsDetails">
+        <link:definition>9955575 - Disclosure - PENSION AND OTHER POSTRETIREMENT BENEFIT PLANS - Pension and other benefit amounts recognized in consolidated balance sheets (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="PENSIONANDOTHERPOSTRETIREMENTBENEFITPLANSScheduleofpensionplanswithprojectedbenefitobligationinexcessoffairvalueofplanassetsDetails" roleURI="http://www.thecocacolacompany.com/role/PENSIONANDOTHERPOSTRETIREMENTBENEFITPLANSScheduleofpensionplanswithprojectedbenefitobligationinexcessoffairvalueofplanassetsDetails">
+        <link:definition>9955576 - Disclosure - PENSION AND OTHER POSTRETIREMENT BENEFIT PLANS - Schedule of pension plans with projected benefit obligation in excess of fair value of plan assets (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="PENSIONANDOTHERPOSTRETIREMENTBENEFITPLANSAccumulatedbenefitobligationsinexcessoffairvalueofplanassetsDetails" roleURI="http://www.thecocacolacompany.com/role/PENSIONANDOTHERPOSTRETIREMENTBENEFITPLANSAccumulatedbenefitobligationsinexcessoffairvalueofplanassetsDetails">
+        <link:definition>9955577 - Disclosure - PENSION AND OTHER POSTRETIREMENT BENEFIT PLANS - Accumulated benefit obligations in excess of fair value of plan assets (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="PENSIONANDOTHERPOSTRETIREMENTBENEFITPLANSTotalpensionassetsforUSandnonUSplansDetails" roleURI="http://www.thecocacolacompany.com/role/PENSIONANDOTHERPOSTRETIREMENTBENEFITPLANSTotalpensionassetsforUSandnonUSplansDetails">
+        <link:definition>9955578 - Disclosure - PENSION AND OTHER POSTRETIREMENT BENEFIT PLANS - Total pension assets for U.S. and non-U.S. plans (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="PENSIONANDOTHERPOSTRETIREMENTBENEFITPLANSNetperiodicbenefitcostforpensionandotherpostretirementbenefitplansDetails" roleURI="http://www.thecocacolacompany.com/role/PENSIONANDOTHERPOSTRETIREMENTBENEFITPLANSNetperiodicbenefitcostforpensionandotherpostretirementbenefitplansDetails">
+        <link:definition>9955579 - Disclosure - PENSION AND OTHER POSTRETIREMENT BENEFIT PLANS - Net periodic benefit cost for pension and other postretirement benefit plans (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="PENSIONANDOTHERPOSTRETIREMENTBENEFITPLANSChangesandamountsinAOCIforpensionandotherpostretirementbenefitplansDetails" roleURI="http://www.thecocacolacompany.com/role/PENSIONANDOTHERPOSTRETIREMENTBENEFITPLANSChangesandamountsinAOCIforpensionandotherpostretirementbenefitplansDetails">
+        <link:definition>9955580 - Disclosure - PENSION AND OTHER POSTRETIREMENT BENEFIT PLANS - Changes and amounts in AOCI for pension and other postretirement benefit plans (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="PENSIONANDOTHERPOSTRETIREMENTBENEFITPLANSCertainweightedaverageassumptionsusedincomputingthebenefitobligationsandnetperiodicbenefitcostDetails" roleURI="http://www.thecocacolacompany.com/role/PENSIONANDOTHERPOSTRETIREMENTBENEFITPLANSCertainweightedaverageassumptionsusedincomputingthebenefitobligationsandnetperiodicbenefitcostDetails">
+        <link:definition>9955581 - Disclosure - PENSION AND OTHER POSTRETIREMENT BENEFIT PLANS - Certain weighted average assumptions used in computing the benefit obligations and net periodic benefit cost (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="PENSIONANDOTHERPOSTRETIREMENTBENEFITPLANSAssumedhealthcarecosttrendratesDetails" roleURI="http://www.thecocacolacompany.com/role/PENSIONANDOTHERPOSTRETIREMENTBENEFITPLANSAssumedhealthcarecosttrendratesDetails">
+        <link:definition>9955582 - Disclosure - PENSION AND OTHER POSTRETIREMENT BENEFIT PLANS - Assumed health care cost trend rates (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="PENSIONANDOTHERPOSTRETIREMENTBENEFITPLANSEstimatedfuturebenefitpaymentsforpensionandotherpostretirementbenefitplansDetails" roleURI="http://www.thecocacolacompany.com/role/PENSIONANDOTHERPOSTRETIREMENTBENEFITPLANSEstimatedfuturebenefitpaymentsforpensionandotherpostretirementbenefitplansDetails">
+        <link:definition>9955583 - Disclosure - PENSION AND OTHER POSTRETIREMENT BENEFIT PLANS - Estimated future benefit payments for pension and other postretirement benefit plans (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="PENSIONANDOTHERPOSTRETIREMENTBENEFITPLANSNarrativeDetails" roleURI="http://www.thecocacolacompany.com/role/PENSIONANDOTHERPOSTRETIREMENTBENEFITPLANSNarrativeDetails">
+        <link:definition>9955584 - Disclosure - PENSION AND OTHER POSTRETIREMENT BENEFIT PLANS - Narrative (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="INCOMETAXESScheduleofIncomeBeforeIncomeTaxesDetails" roleURI="http://www.thecocacolacompany.com/role/INCOMETAXESScheduleofIncomeBeforeIncomeTaxesDetails">
+        <link:definition>9955585 - Disclosure - INCOME TAXES - Schedule of Income Before Income Taxes (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="INCOMETAXESScheduleofIncomeTaxExpenseBenefitDetails" roleURI="http://www.thecocacolacompany.com/role/INCOMETAXESScheduleofIncomeTaxExpenseBenefitDetails">
+        <link:definition>9955586 - Disclosure - INCOME TAXES - Schedule of Income Tax Expense (Benefit) (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="INCOMETAXESReconciliationoftheStatutoryUSFederalTaxRateandEffectiveTaxRatesDetails" roleURI="http://www.thecocacolacompany.com/role/INCOMETAXESReconciliationoftheStatutoryUSFederalTaxRateandEffectiveTaxRatesDetails">
+        <link:definition>9955587 - Disclosure - INCOME TAXES - Reconciliation of the Statutory U.S. Federal Tax Rate and Effective Tax Rates (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="INCOMETAXESScheduleofUnrecognizedTaxBenefitsRollForwardDetails" roleURI="http://www.thecocacolacompany.com/role/INCOMETAXESScheduleofUnrecognizedTaxBenefitsRollForwardDetails">
+        <link:definition>9955588 - Disclosure - INCOME TAXES - Schedule of Unrecognized Tax Benefits Roll Forward (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="INCOMETAXESDeferredTaxAssetsandLiabilitiesDetails" roleURI="http://www.thecocacolacompany.com/role/INCOMETAXESDeferredTaxAssetsandLiabilitiesDetails">
+        <link:definition>9955589 - Disclosure - INCOME TAXES - Deferred Tax Assets and Liabilities (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="INCOMETAXESSummaryofValuationAllowanceDetails" roleURI="http://www.thecocacolacompany.com/role/INCOMETAXESSummaryofValuationAllowanceDetails">
+        <link:definition>9955590 - Disclosure - INCOME TAXES - Summary of Valuation Allowance (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="INCOMETAXESNarrativeDetails" roleURI="http://www.thecocacolacompany.com/role/INCOMETAXESNarrativeDetails">
+        <link:definition>9955591 - Disclosure - INCOME TAXES - Narrative (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="OTHERCOMPREHENSIVEINCOMEAOCIAttributabletoShareholdersDetails" roleURI="http://www.thecocacolacompany.com/role/OTHERCOMPREHENSIVEINCOMEAOCIAttributabletoShareholdersDetails">
+        <link:definition>9955592 - Disclosure - OTHER COMPREHENSIVE INCOME - AOCI Attributable to Shareholders (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="OTHERCOMPREHENSIVEINCOMETotalComprehensiveIncomeDetails" roleURI="http://www.thecocacolacompany.com/role/OTHERCOMPREHENSIVEINCOMETotalComprehensiveIncomeDetails">
+        <link:definition>9955593 - Disclosure - OTHER COMPREHENSIVE INCOME - Total Comprehensive Income (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="OTHERCOMPREHENSIVEINCOMEOCIAttributabletoShareholdersDetails" roleURI="http://www.thecocacolacompany.com/role/OTHERCOMPREHENSIVEINCOMEOCIAttributabletoShareholdersDetails">
+        <link:definition>9955594 - Disclosure - OTHER COMPREHENSIVE INCOME - OCI Attributable to Shareholders (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="OTHERCOMPREHENSIVEINCOMEOCIAttributabletoShareholdersDetails_1" roleURI="http://www.thecocacolacompany.com/role/OTHERCOMPREHENSIVEINCOMEOCIAttributabletoShareholdersDetails_1">
+        <link:definition>9955594 - Disclosure - OTHER COMPREHENSIVE INCOME - OCI Attributable to Shareholders (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="OTHERCOMPREHENSIVEINCOMEAdjustmentReclassifiedtoIncomeDetails" roleURI="http://www.thecocacolacompany.com/role/OTHERCOMPREHENSIVEINCOMEAdjustmentReclassifiedtoIncomeDetails">
+        <link:definition>9955595 - Disclosure - OTHER COMPREHENSIVE INCOME - Adjustment Reclassified to Income (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="FAIRVALUEMEASUREMENTSAssetsandLiabilitiesMeasuredatFairValueonaRecurringBasisDetails" roleURI="http://www.thecocacolacompany.com/role/FAIRVALUEMEASUREMENTSAssetsandLiabilitiesMeasuredatFairValueonaRecurringBasisDetails">
+        <link:definition>9955596 - Disclosure - FAIR VALUE MEASUREMENTS - Assets and Liabilities Measured at Fair Value on a Recurring Basis (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="FAIRVALUEMEASUREMENTSAssetsandLiabilitiesMeasuredatFairValueonaNonrecurringBasisDetails" roleURI="http://www.thecocacolacompany.com/role/FAIRVALUEMEASUREMENTSAssetsandLiabilitiesMeasuredatFairValueonaNonrecurringBasisDetails">
+        <link:definition>9955597 - Disclosure - FAIR VALUE MEASUREMENTS - Assets and Liabilities Measured at Fair Value on a Nonrecurring Basis (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="FAIRVALUEMEASUREMENTSLevelsWithintheFairValueHierarchyforPensionPlanAssetsDetails" roleURI="http://www.thecocacolacompany.com/role/FAIRVALUEMEASUREMENTSLevelsWithintheFairValueHierarchyforPensionPlanAssetsDetails">
+        <link:definition>9955598 - Disclosure - FAIR VALUE MEASUREMENTS - Levels Within the Fair Value Hierarchy for Pension Plan Assets (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="FAIRVALUEMEASUREMENTSReconciliationofBeginningandEndingBalanceofLevel3AssetsforUSandNonUSPensionPlansDetails" roleURI="http://www.thecocacolacompany.com/role/FAIRVALUEMEASUREMENTSReconciliationofBeginningandEndingBalanceofLevel3AssetsforUSandNonUSPensionPlansDetails">
+        <link:definition>9955599 - Disclosure - FAIR VALUE MEASUREMENTS - Reconciliation of Beginning and Ending Balance of Level 3 Assets for US and Non-US Pension Plans (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="FAIRVALUEMEASUREMENTSNarrativeDetails" roleURI="http://www.thecocacolacompany.com/role/FAIRVALUEMEASUREMENTSNarrativeDetails">
+        <link:definition>9955600 - Disclosure - FAIR VALUE MEASUREMENTS - Narrative (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="SIGNIFICANTOPERATINGANDNONOPERATINGITEMSDetails" roleURI="http://www.thecocacolacompany.com/role/SIGNIFICANTOPERATINGANDNONOPERATINGITEMSDetails">
+        <link:definition>9955601 - Disclosure - SIGNIFICANT OPERATING AND NONOPERATING ITEMS (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="RESTRUCTURINGProductivityandReinvestmentInitiativesCostsDetails" roleURI="http://www.thecocacolacompany.com/role/RESTRUCTURINGProductivityandReinvestmentInitiativesCostsDetails">
+        <link:definition>9955602 - Disclosure - RESTRUCTURING - Productivity and Reinvestment Initiatives Costs (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="RESTRUCTURINGNarrativeDetails" roleURI="http://www.thecocacolacompany.com/role/RESTRUCTURINGNarrativeDetails">
+        <link:definition>9955603 - Disclosure - RESTRUCTURING - Narrative (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="OPERATINGSEGMENTSTotalNetOperatingRevenuesRelatedtoConcentrateandFinishedProductsOperationDetails" roleURI="http://www.thecocacolacompany.com/role/OPERATINGSEGMENTSTotalNetOperatingRevenuesRelatedtoConcentrateandFinishedProductsOperationDetails">
+        <link:definition>9955604 - Disclosure - OPERATING SEGMENTS - Total Net Operating Revenues Related to Concentrate and Finished Products Operation (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="OPERATINGSEGMENTSNetRevenueandPPEbyGeographyDetails" roleURI="http://www.thecocacolacompany.com/role/OPERATINGSEGMENTSNetRevenueandPPEbyGeographyDetails">
+        <link:definition>9955605 - Disclosure - OPERATING SEGMENTS - Net Revenue and PPE by Geography (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="OPERATINGSEGMENTSInformationaboutOperatingSegmentsDetails" roleURI="http://www.thecocacolacompany.com/role/OPERATINGSEGMENTSInformationaboutOperatingSegmentsDetails">
+        <link:definition>9955606 - Disclosure - OPERATING SEGMENTS - Information about Operating Segments (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="OPERATINGSEGMENTSNarrativeDetails" roleURI="http://www.thecocacolacompany.com/role/OPERATINGSEGMENTSNarrativeDetails">
+        <link:definition>9955607 - Disclosure - OPERATING SEGMENTS - Narrative (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+      <link:roleType id="NETCHANGEINOPERATINGASSETSANDLIABILITIESDetails" roleURI="http://www.thecocacolacompany.com/role/NETCHANGEINOPERATINGASSETSANDLIABILITIESDetails">
+        <link:definition>9955608 - Disclosure - NET CHANGE IN OPERATING ASSETS AND LIABILITIES (Details)</link:definition>
+        <link:usedOn>link:presentationLink</link:usedOn>
+        <link:usedOn>link:calculationLink</link:usedOn>
+        <link:usedOn>link:definitionLink</link:usedOn>
+      </link:roleType>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element id="ko_CommonStock0.25ParValueMember" abstract="true" name="CommonStock0.25ParValueMember" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:domainItemType"/>
+  <xs:element id="ko_A1.875NotesDue2026Member" abstract="true" name="A1.875NotesDue2026Member" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:domainItemType"/>
+  <xs:element id="ko_A0.750NotesDue2026Member" abstract="true" name="A0.750NotesDue2026Member" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:domainItemType"/>
+  <xs:element id="ko_A1.125NotesDue2027Member" abstract="true" name="A1.125NotesDue2027Member" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:domainItemType"/>
+  <xs:element id="ko_A0125NotesDue2029KO29AMember" abstract="true" name="A0125NotesDue2029KO29AMember" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:domainItemType"/>
+  <xs:element id="ko_A0125NotesDue2029KO29BMember" abstract="true" name="A0125NotesDue2029KO29BMember" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:domainItemType"/>
+  <xs:element id="ko_A0400NotesDue2030Member" abstract="true" name="A0400NotesDue2030Member" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:domainItemType"/>
+  <xs:element id="ko_A1.250NotesDue2031Member" abstract="true" name="A1.250NotesDue2031Member" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:domainItemType"/>
+  <xs:element id="ko_A3.125NotesDue2032Member" abstract="true" name="A3.125NotesDue2032Member" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types:domainItemType"/>
+  <xs:element id="ko_A0375NotesDue2033Member" abstract="true" name="A0375NotesDue2033Member" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:domainItemType"/>
+  <xs:element id="ko_A0500NotesDue2033Member" abstract="true" name="A0500NotesDue2033Member" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:domainItemType"/>
+  <xs:element id="ko_A1.625NotesDue2035Member" abstract="true" name="A1.625NotesDue2035Member" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:domainItemType"/>
+  <xs:element id="ko_A1.100NotesDue2036Member" abstract="true" name="A1.100NotesDue2036Member" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:domainItemType"/>
+  <xs:element id="ko_A0950NotesDue2036Member" abstract="true" name="A0950NotesDue2036Member" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:domainItemType"/>
+  <xs:element id="ko_A3.375NotesDue2037Member" abstract="true" name="A3.375NotesDue2037Member" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types:domainItemType"/>
+  <xs:element id="ko_A0800NotesDue2040Member" abstract="true" name="A0800NotesDue2040Member" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:domainItemType"/>
+  <xs:element id="ko_A1000NotesDue2041Member" abstract="true" name="A1000NotesDue2041Member" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:domainItemType"/>
+  <xs:element id="ko_A3.500NotesDue2044Member" abstract="true" name="A3.500NotesDue2044Member" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types:domainItemType"/>
+  <xs:element id="ko_A3.750NotesDue2053Member" abstract="true" name="A3.750NotesDue2053Member" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types:domainItemType"/>
+  <xs:element id="ko_AuditInformationAbstract" abstract="true" name="AuditInformationAbstract" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="xbrli:stringItemType"/>
+  <xs:element id="ko_PurchasesofInvestments" abstract="false" name="PurchasesofInvestments" nillable="true" xbrli:periodType="duration" xbrli:balance="credit" substitutionGroup="xbrli:item" type="xbrli:monetaryItemType"/>
+  <xs:element id="ko_ProceedsFromDisposalsOfInvestments" abstract="false" name="ProceedsFromDisposalsOfInvestments" nillable="true" xbrli:periodType="duration" xbrli:balance="debit" substitutionGroup="xbrli:item" type="xbrli:monetaryItemType"/>
+  <xs:element id="ko_AcquisitionsOfBusinessesEquityMethodInvestmentsAndNonmarketableSecurities" abstract="false" name="AcquisitionsOfBusinessesEquityMethodInvestmentsAndNonmarketableSecurities" nillable="true" xbrli:periodType="duration" xbrli:balance="credit" substitutionGroup="xbrli:item" type="xbrli:monetaryItemType"/>
+  <xs:element id="ko_ProceedsFromDisposalsOfBusinessesEquityMethodInvestmentsAndNonmarketableSecurities" abstract="false" name="ProceedsFromDisposalsOfBusinessesEquityMethodInvestmentsAndNonmarketableSecurities" nillable="true" xbrli:periodType="duration" xbrli:balance="debit" substitutionGroup="xbrli:item" type="xbrli:monetaryItemType"/>
+  <xs:element id="ko_CollateralPaidReceivedAssociatedWithHedgingActivitiesNet" abstract="false" name="CollateralPaidReceivedAssociatedWithHedgingActivitiesNet" nillable="true" xbrli:periodType="duration" xbrli:balance="credit" substitutionGroup="xbrli:item" type="xbrli:monetaryItemType"/>
+  <xs:element id="ko_ShippingAndHandlingCostsPolicyPolicyTextBlock" abstract="false" name="ShippingAndHandlingCostsPolicyPolicyTextBlock" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:textBlockItemType"/>
+  <xs:element id="ko_ShortTermInvestmentsPolicyTextBlock" abstract="false" name="ShortTermInvestmentsPolicyTextBlock" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:textBlockItemType"/>
+  <xs:element id="ko_CarryingvalueofequitysecuritiesbybalancesheetlocationTableTextBlock" abstract="false" name="CarryingvalueofequitysecuritiesbybalancesheetlocationTableTextBlock" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:textBlockItemType"/>
+  <xs:element id="ko_ScheduleOfAvailableForSaleAndTradingSecuritiesReconciliationTableTextBlock" abstract="false" name="ScheduleOfAvailableForSaleAndTradingSecuritiesReconciliationTableTextBlock" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:textBlockItemType"/>
+  <xs:element id="ko_CarryingValuesOfDebtSecuritiesByBalanceSheetLocationTableTextBlock" abstract="false" name="CarryingValuesOfDebtSecuritiesByBalanceSheetLocationTableTextBlock" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:textBlockItemType"/>
+  <xs:element id="ko_ScheduleOfCashFlowHedgesIncludedInAccumulatedOtherComprehensiveIncomeLossAndOtherComprehensiveIncomeOCITableTextBlock" abstract="false" name="ScheduleOfCashFlowHedgesIncludedInAccumulatedOtherComprehensiveIncomeLossAndOtherComprehensiveIncomeOCITableTextBlock" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:textBlockItemType"/>
+  <xs:element id="ko_ScheduleOfDerivativeInstrumentsNotDesignatedAsHedgingInstrumentsGainLossInStatementOfFinancialPerformanceTableTextBlock" abstract="false" name="ScheduleOfDerivativeInstrumentsNotDesignatedAsHedgingInstrumentsGainLossInStatementOfFinancialPerformanceTableTextBlock" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:textBlockItemType"/>
+  <xs:element id="ko_EquityMethodInvestmentsFairValueAndCarryingValueTableTextBlock" abstract="false" name="EquityMethodInvestmentsFairValueAndCarryingValueTableTextBlock" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:textBlockItemType"/>
+  <xs:element id="ko_LesseeOperatingLeaseBalanceSheetInformationTableTextBlock" abstract="false" name="LesseeOperatingLeaseBalanceSheetInformationTableTextBlock" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:textBlockItemType"/>
+  <xs:element id="ko_LesseeOperatingLeaseWeightedAverageRemainingLeaseTermandDiscountRateTableTextBlock" abstract="false" name="LesseeOperatingLeaseWeightedAverageRemainingLeaseTermandDiscountRateTableTextBlock" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:textBlockItemType"/>
+  <xs:element id="ko_SummaryOfInformationAboutVestedPerformanceShareUnitsBasedOnTheCertifiedAwardLevelTableTextBlock" abstract="false" name="SummaryOfInformationAboutVestedPerformanceShareUnitsBasedOnTheCertifiedAwardLevelTableTextBlock" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:textBlockItemType"/>
+  <xs:element id="ko_ComprehensiveIncomeLossApportionedBetweenShareownersOfTheCocaColaCompanyAndNoncontrollingInterestsTableTextBlock" abstract="false" name="ComprehensiveIncomeLossApportionedBetweenShareownersOfTheCocaColaCompanyAndNoncontrollingInterestsTableTextBlock" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:textBlockItemType"/>
+  <xs:element id="ko_AccountingPoliciesTable" abstract="true" name="AccountingPoliciesTable" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrldt:hypercubeItem" type="xbrli:stringItemType"/>
+  <xs:element id="ko_AccountingPoliciesLineItems" abstract="true" name="AccountingPoliciesLineItems" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="xbrli:stringItemType"/>
+  <xs:element id="ko_CountriesCoveredForBusinessOperations" abstract="false" name="CountriesCoveredForBusinessOperations" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="xbrli:integerItemType"/>
+  <xs:element id="ko_BeverageServingsConsumedPerDayOfBusinessOperations" abstract="false" name="BeverageServingsConsumedPerDayOfBusinessOperations" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="xbrli:integerItemType"/>
+  <xs:element id="ko_BeverageServingsConsumedPerDay" abstract="false" name="BeverageServingsConsumedPerDay" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="xbrli:integerItemType"/>
+  <xs:element id="ko_InvestmentsClassifiedAsCashEquivalentsMaximumMaturityPeriod" abstract="false" name="InvestmentsClassifiedAsCashEquivalentsMaximumMaturityPeriod" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="xbrli:integerItemType"/>
+  <xs:element id="ko_InvestmentsClassifiedAsShortTermInvestmentsMaturityPeriodLowEndOfRange" abstract="false" name="InvestmentsClassifiedAsShortTermInvestmentsMaturityPeriodLowEndOfRange" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="xbrli:integerItemType"/>
+  <xs:element id="ko_InvestmentsClassifiedAsShortTermInvestmentsMaturityPeriodHighEndOfRange" abstract="false" name="InvestmentsClassifiedAsShortTermInvestmentsMaturityPeriodHighEndOfRange" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="xbrli:integerItemType"/>
+  <xs:element id="ko_EquityMethodInvesteeInThailandMember" abstract="true" name="EquityMethodInvesteeInThailandMember" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types:domainItemType"/>
+  <xs:element id="ko_EquityMethodInvesteeInNorthAmericaMember" abstract="true" name="EquityMethodInvesteeInNorthAmericaMember" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types:domainItemType"/>
+  <xs:element id="ko_CertainAdditionalBottlingOperationsInIndiaMember" abstract="true" name="CertainAdditionalBottlingOperationsInIndiaMember" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types:domainItemType"/>
+  <xs:element id="ko_EquityMethodInvesteeInIndonesiaMember" abstract="true" name="EquityMethodInvesteeInIndonesiaMember" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types:domainItemType"/>
+  <xs:element id="ko_EquityMethodInvesteeInPakistanMember" abstract="true" name="EquityMethodInvesteeInPakistanMember" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types:domainItemType"/>
+  <xs:element id="ko_CambodiaBottlingOperationsMember" abstract="true" name="CambodiaBottlingOperationsMember" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:domainItemType"/>
+  <xs:element id="ko_CertainBottlingOperationsInIndiaMember" abstract="true" name="CertainBottlingOperationsInIndiaMember" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types:domainItemType"/>
+  <xs:element id="ko_BangladeshBottlingOperationsMember" abstract="true" name="BangladeshBottlingOperationsMember" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types:domainItemType"/>
+  <xs:element id="ko_PhilippinesBottlingOperationsMember" abstract="true" name="PhilippinesBottlingOperationsMember" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types:domainItemType"/>
+  <xs:element id="ko_VietnamBottlingOperationsMember" abstract="true" name="VietnamBottlingOperationsMember" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:domainItemType"/>
+  <xs:element id="ko_PAMInvestmentsMember" abstract="true" name="PAMInvestmentsMember" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types:domainItemType"/>
+  <xs:element id="ko_DisposalGroupIncludingDiscontinuedOperationsCashCashEquivalentsAndShortTermInvestments" abstract="false" name="DisposalGroupIncludingDiscontinuedOperationsCashCashEquivalentsAndShortTermInvestments" nillable="true" xbrli:periodType="instant" xbrli:balance="debit" substitutionGroup="xbrli:item" type="xbrli:monetaryItemType"/>
+  <xs:element id="ko_DisposalGroupIncludingDiscontinuedOperationMarketableSecurities" abstract="false" name="DisposalGroupIncludingDiscontinuedOperationMarketableSecurities" nillable="true" xbrli:periodType="instant" xbrli:balance="debit" substitutionGroup="xbrli:item" type="xbrli:monetaryItemType"/>
+  <xs:element id="ko_DisposalGroupIncludingDiscontinuedOperationEquityMethodInvestments" abstract="false" name="DisposalGroupIncludingDiscontinuedOperationEquityMethodInvestments" nillable="true" xbrli:periodType="instant" xbrli:balance="debit" substitutionGroup="xbrli:item" type="xbrli:monetaryItemType"/>
+  <xs:element id="ko_DisposalGroupIncludingDiscontinuedOperationLoansAndNotesPayable" abstract="false" name="DisposalGroupIncludingDiscontinuedOperationLoansAndNotesPayable" nillable="true" xbrli:periodType="instant" xbrli:balance="credit" substitutionGroup="xbrli:item" type="xbrli:monetaryItemType"/>
+  <xs:element id="ko_DisposalGroupIncludingDiscontinuedOperationLongTermDebt" abstract="false" name="DisposalGroupIncludingDiscontinuedOperationLongTermDebt" nillable="true" xbrli:periodType="instant" xbrli:balance="credit" substitutionGroup="xbrli:item" type="xbrli:monetaryItemType"/>
+  <xs:element id="ko_InternationalMember" abstract="true" name="InternationalMember" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:domainItemType"/>
+  <xs:element id="ko_ConcentrateOperationsMember" abstract="true" name="ConcentrateOperationsMember" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:domainItemType"/>
+  <xs:element id="ko_FinishedProductOperationsMember" abstract="true" name="FinishedProductOperationsMember" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:domainItemType"/>
+  <xs:element id="ko_MarketableSecuritiesMember" abstract="true" name="MarketableSecuritiesMember" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:domainItemType"/>
+  <xs:element id="ko_DebtSecuritiesUnrealizedGainAbstract" abstract="true" name="DebtSecuritiesUnrealizedGainAbstract" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="xbrli:stringItemType"/>
+  <xs:element id="ko_DebtSecuritiesUnrealizedLossAbstract" abstract="true" name="DebtSecuritiesUnrealizedLossAbstract" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="xbrli:stringItemType"/>
+  <xs:element id="ko_Debtsecuritiesgrossunrealizedloss" abstract="false" name="Debtsecuritiesgrossunrealizedloss" nillable="true" xbrli:periodType="instant" xbrli:balance="debit" substitutionGroup="xbrli:item" type="xbrli:monetaryItemType"/>
+  <xs:element id="ko_TradingSecuritiesMember" abstract="true" name="TradingSecuritiesMember" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:domainItemType"/>
+  <xs:element id="ko_SolvencyFundsOfInsuranceCaptive" abstract="false" name="SolvencyFundsOfInsuranceCaptive" nillable="true" xbrli:periodType="instant" xbrli:balance="debit" substitutionGroup="xbrli:item" type="xbrli:monetaryItemType"/>
+  <xs:element id="ko_ForeignCurrencyDenominatedDebtMember" abstract="true" name="ForeignCurrencyDenominatedDebtMember" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:domainItemType"/>
+  <xs:element id="ko_MonsterBeverageCorporationMember" abstract="true" name="MonsterBeverageCorporationMember" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:domainItemType"/>
+  <xs:element id="ko_CCEPMember" abstract="true" name="CCEPMember" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:domainItemType"/>
+  <xs:element id="ko_CocaColaFemsaMember" abstract="true" name="CocaColaFemsaMember" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:domainItemType"/>
+  <xs:element id="ko_CocaColaHellenicMember" abstract="true" name="CocaColaHellenicMember" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:domainItemType"/>
+  <xs:element id="ko_CocaColaConsolidatedMember" abstract="true" name="CocaColaConsolidatedMember" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:domainItemType"/>
+  <xs:element id="ko_CocaColaBottlersJapanMember" abstract="true" name="CocaColaBottlersJapanMember" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:domainItemType"/>
+  <xs:element id="ko_CocaColaIcecekMember" abstract="true" name="CocaColaIcecekMember" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:domainItemType"/>
+  <xs:element id="ko_AndinaMember" abstract="true" name="AndinaMember" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:domainItemType"/>
+  <xs:element id="ko_ACBebidasMemberMember" abstract="true" name="ACBebidasMemberMember" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:domainItemType"/>
+  <xs:element id="ko_RelatedPartyTransactionSalesToRelatedParty" abstract="false" name="RelatedPartyTransactionSalesToRelatedParty" nillable="true" xbrli:periodType="duration" xbrli:balance="credit" substitutionGroup="xbrli:item" type="xbrli:monetaryItemType"/>
+  <xs:element id="ko_RelatedPartyTransactionPaymentsMadeToRelatedParty" abstract="false" name="RelatedPartyTransactionPaymentsMadeToRelatedParty" nillable="true" xbrli:periodType="duration" xbrli:balance="debit" substitutionGroup="xbrli:item" type="xbrli:monetaryItemType"/>
+  <xs:element id="ko_RelatedPartyTransactionNetReceivablesDueFromRelatedParty" abstract="false" name="RelatedPartyTransactionNetReceivablesDueFromRelatedParty" nillable="true" xbrli:periodType="instant" xbrli:balance="debit" substitutionGroup="xbrli:item" type="xbrli:monetaryItemType"/>
+  <xs:element id="ko_EuropeMiddleEastAfricaMember" abstract="true" name="EuropeMiddleEastAfricaMember" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:domainItemType"/>
+  <xs:element id="ko_LatinAmericaSegmentMember" abstract="true" name="LatinAmericaSegmentMember" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:domainItemType"/>
+  <xs:element id="ko_NorthAmericaSegmentMember" abstract="true" name="NorthAmericaSegmentMember" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:domainItemType"/>
+  <xs:element id="ko_A.PacificMember" abstract="true" name="A.PacificMember" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:domainItemType"/>
+  <xs:element id="ko_GlobalVenturesMember" abstract="true" name="GlobalVenturesMember" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:domainItemType"/>
+  <xs:element id="ko_BottlingInvestmentsMember" abstract="true" name="BottlingInvestmentsMember" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:domainItemType"/>
+  <xs:element id="ko_AccountsPayableAndAccruedLiabilitiesTable" abstract="true" name="AccountsPayableAndAccruedLiabilitiesTable" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrldt:hypercubeItem" type="xbrli:stringItemType"/>
+  <xs:element id="ko_FairlifeMember" abstract="true" name="FairlifeMember" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:domainItemType"/>
+  <xs:element id="ko_AccountsPayableAndAccruedLiabilitiesLineItems" abstract="true" name="AccountsPayableAndAccruedLiabilitiesLineItems" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="xbrli:stringItemType"/>
+  <xs:element id="ko_U.S.DollarNotesDue20242093Member" abstract="true" name="U.S.DollarNotesDue20242093Member" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:domainItemType"/>
+  <xs:element id="ko_USDollarDebenturesDue2023Through2098Member" abstract="true" name="USDollarDebenturesDue2023Through2098Member" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:domainItemType"/>
+  <xs:element id="ko_AustralianDollarNotesDue2024Member" abstract="true" name="AustralianDollarNotesDue2024Member" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:domainItemType"/>
+  <xs:element id="ko_EuroNotesDue20242040Member" abstract="true" name="EuroNotesDue20242040Member" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:domainItemType"/>
+  <xs:element id="ko_SwissFrancNotesDue2028Member" abstract="true" name="SwissFrancNotesDue2028Member" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:domainItemType"/>
+  <xs:element id="ko_OtherDueThrough2098Member" abstract="true" name="OtherDueThrough2098Member" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types:domainItemType"/>
+  <xs:element id="ko_BottlingOperationsInAfricaMember" abstract="true" name="BottlingOperationsInAfricaMember" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:domainItemType"/>
+  <xs:element id="ko_IncreaseDecreaseinCarryingValueofLongtermDebtInterestRateFairValueHedgeAdjustment" abstract="false" name="IncreaseDecreaseinCarryingValueofLongtermDebtInterestRateFairValueHedgeAdjustment" nillable="true" xbrli:periodType="instant" xbrli:balance="credit" substitutionGroup="xbrli:item" type="xbrli:monetaryItemType"/>
+  <xs:element id="ko_TaxYears20072009Member" abstract="true" name="TaxYears20072009Member" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:domainItemType"/>
+  <xs:element id="ko_LegalContingenciesAbstract" abstract="true" name="LegalContingenciesAbstract" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="xbrli:stringItemType"/>
+  <xs:element id="ko_IRSClaim" abstract="false" name="IRSClaim" nillable="true" xbrli:periodType="instant" xbrli:balance="credit" substitutionGroup="xbrli:item" type="xbrli:monetaryItemType"/>
+  <xs:element id="ko_IRSNoticeIncomeReallocation" abstract="false" name="IRSNoticeIncomeReallocation" nillable="true" xbrli:periodType="instant" xbrli:balance="credit" substitutionGroup="xbrli:item" type="xbrli:monetaryItemType"/>
+  <xs:element id="ko_TransferPricingAdjustment" abstract="false" name="TransferPricingAdjustment" nillable="true" xbrli:periodType="duration" xbrli:balance="credit" substitutionGroup="xbrli:item" type="xbrli:monetaryItemType"/>
+  <xs:element id="ko_IRSAmendedClaim" abstract="false" name="IRSAmendedClaim" nillable="true" xbrli:periodType="duration" xbrli:balance="credit" substitutionGroup="xbrli:item" type="xbrli:monetaryItemType"/>
+  <xs:element id="ko_IRSAmendedClaimRelatedtoMexicoLicensee" abstract="false" name="IRSAmendedClaimRelatedtoMexicoLicensee" nillable="true" xbrli:periodType="duration" xbrli:balance="credit" substitutionGroup="xbrli:item" type="xbrli:monetaryItemType"/>
+  <xs:element id="ko_TotalDepositForThe2007Through2009TaxYears" abstract="false" name="TotalDepositForThe2007Through2009TaxYears" nillable="true" xbrli:periodType="instant" xbrli:balance="credit" substitutionGroup="xbrli:item" type="xbrli:monetaryItemType"/>
+  <xs:element id="ko_RecordedEstimateOfTaxLiability" abstract="false" name="RecordedEstimateOfTaxLiability" nillable="true" xbrli:periodType="instant" xbrli:balance="credit" substitutionGroup="xbrli:item" type="xbrli:monetaryItemType"/>
+  <xs:element id="ko_IncrementalTaxAndInterestLiability" abstract="false" name="IncrementalTaxAndInterestLiability" nillable="true" xbrli:periodType="duration" xbrli:balance="credit" substitutionGroup="xbrli:item" type="xbrli:monetaryItemType"/>
+  <xs:element id="ko_PotentialIncreaseInEffectiveTaxRate" abstract="false" name="PotentialIncreaseInEffectiveTaxRate" nillable="true" xbrli:periodType="instant" substitutionGroup="xbrli:item" type="dtr-types1:percentItemType"/>
+  <xs:element id="ko_RiskManagementProgramsAbstract" abstract="true" name="RiskManagementProgramsAbstract" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="xbrli:stringItemType"/>
+  <xs:element id="ko_PerformanceShareUnits20212023AwardMember" abstract="true" name="PerformanceShareUnits20212023AwardMember" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:domainItemType"/>
+  <xs:element id="ko_ShareBasedCompensationArrangementByShareBasedPaymentAwardEquityInstrumentsOtherThanOptionsApprovedAndCertified" abstract="false" name="ShareBasedCompensationArrangementByShareBasedPaymentAwardEquityInstrumentsOtherThanOptionsApprovedAndCertified" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="xbrli:sharesItemType"/>
+  <xs:element id="ko_ShareBasedCompensationArrangementByShareBasedPaymentAwardEquityInstrumentsOtherThanOptionsApprovedAndCertifiedWeightedAverageGrantDateFairValue" abstract="false" name="ShareBasedCompensationArrangementByShareBasedPaymentAwardEquityInstrumentsOtherThanOptionsApprovedAndCertifiedWeightedAverageGrantDateFairValue" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:perShareItemType"/>
+  <xs:element id="ko_ShareBasedCompensationArrangementByShareBasedPaymentAwardEquityInstrumentsOtherThanOptionsReleasedInPeriod" abstract="false" name="ShareBasedCompensationArrangementByShareBasedPaymentAwardEquityInstrumentsOtherThanOptionsReleasedInPeriod" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="xbrli:sharesItemType"/>
+  <xs:element id="ko_ShareBasedCompensationArrangementByShareBasedPaymentAwardEquityInstrumentsOtherThanOptionsReleasedInPeriodWeightedAverageGrantDateFairValue" abstract="false" name="ShareBasedCompensationArrangementByShareBasedPaymentAwardEquityInstrumentsOtherThanOptionsReleasedInPeriodWeightedAverageGrantDateFairValue" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:perShareItemType"/>
+  <xs:element id="ko_OptionsPlan2014Member" abstract="true" name="OptionsPlan2014Member" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:domainItemType"/>
+  <xs:element id="ko_GlobalEmployeeStockPurchasePlanMember" abstract="true" name="GlobalEmployeeStockPurchasePlanMember" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types:domainItemType"/>
+  <xs:element id="ko_PerformancePeriodAxis" abstract="true" name="PerformancePeriodAxis" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrldt:dimensionItem" type="xbrli:stringItemType"/>
+  <xs:element id="ko_PerformancePeriodDomain" abstract="true" name="PerformancePeriodDomain" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:domainItemType"/>
+  <xs:element id="ko_PerformancePeriod2023To2025Member" abstract="true" name="PerformancePeriod2023To2025Member" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:domainItemType"/>
+  <xs:element id="ko_PerformancePeriod2024To2026Member" abstract="true" name="PerformancePeriod2024To2026Member" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:domainItemType"/>
+  <xs:element id="ko_ShareBasedCompensationArrangementByShareBasedPaymentAwardEquityInstrumentsOtherThanOptionsAggregateIntrinsicValueReleased" abstract="false" name="ShareBasedCompensationArrangementByShareBasedPaymentAwardEquityInstrumentsOtherThanOptionsAggregateIntrinsicValueReleased" nillable="true" xbrli:periodType="duration" xbrli:balance="debit" substitutionGroup="xbrli:item" type="xbrli:monetaryItemType"/>
+  <xs:element id="ko_MutualPooledAndCommingledFundsMember" abstract="true" name="MutualPooledAndCommingledFundsMember" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:domainItemType"/>
+  <xs:element id="ko_HedgeFundsAndLimitedPartnershipsMember" abstract="true" name="HedgeFundsAndLimitedPartnershipsMember" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:domainItemType"/>
+  <xs:element id="ko_DefinedBenefitPlanOtherInvestmentsMember" abstract="true" name="DefinedBenefitPlanOtherInvestmentsMember" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types:domainItemType"/>
+  <xs:element id="ko_CorridorApproachforAmortizingActuarialGainsandLosses" abstract="false" name="CorridorApproachforAmortizingActuarialGainsandLosses" nillable="true" xbrli:periodType="instant" substitutionGroup="xbrli:item" type="dtr-types1:percentItemType"/>
+  <xs:element id="ko_OtherComprehensiveIncomeDefinedBenefitPlansNetTranslationGainLossArisingDuringPeriodBeforeTax" abstract="false" name="OtherComprehensiveIncomeDefinedBenefitPlansNetTranslationGainLossArisingDuringPeriodBeforeTax" nillable="true" xbrli:periodType="duration" xbrli:balance="credit" substitutionGroup="xbrli:item" type="xbrli:monetaryItemType"/>
+  <xs:element id="ko_AlternativeInvestmentsMember" abstract="true" name="AlternativeInvestmentsMember" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:domainItemType"/>
+  <xs:element id="ko_LongDurationBondsMember" abstract="true" name="LongDurationBondsMember" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:domainItemType"/>
+  <xs:element id="ko_MultiStrategyAlternativeCreditManagersMember" abstract="true" name="MultiStrategyAlternativeCreditManagersMember" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:domainItemType"/>
+  <xs:element id="ko_DefinedBenefitPlanPortionOfProjectedPensionBenefitObligationPercentage" abstract="false" name="DefinedBenefitPlanPortionOfProjectedPensionBenefitObligationPercentage" nillable="true" xbrli:periodType="instant" substitutionGroup="xbrli:item" type="dtr-types1:percentItemType"/>
+  <xs:element id="ko_DefinedBenefitPlanPortionOfProjectedPensionPlanAssetsPercentage" abstract="false" name="DefinedBenefitPlanPortionOfProjectedPensionPlanAssetsPercentage" nillable="true" xbrli:periodType="instant" substitutionGroup="xbrli:item" type="dtr-types1:percentItemType"/>
+  <xs:element id="ko_DefinedBenefitPlanMaximumPortionOfPlanAssetsEntrustedWithInvestmentManager" abstract="false" name="DefinedBenefitPlanMaximumPortionOfPlanAssetsEntrustedWithInvestmentManager" nillable="true" xbrli:periodType="instant" substitutionGroup="xbrli:item" type="dtr-types1:percentItemType"/>
+  <xs:element id="ko_DefinedBenefitPlanPlanAssetsTargetAllocationPercentageEuropeanAndCanadian" abstract="false" name="DefinedBenefitPlanPlanAssetsTargetAllocationPercentageEuropeanAndCanadian" nillable="true" xbrli:periodType="instant" substitutionGroup="xbrli:item" type="dtr-types1:percentItemType"/>
+  <xs:element id="ko_MinimumInterestCreditingRate" abstract="false" name="MinimumInterestCreditingRate" nillable="true" xbrli:periodType="instant" substitutionGroup="xbrli:item" type="dtr-types1:percentItemType"/>
+  <xs:element id="ko_PeriodOfTimeCurrentInterestCreditingRateWillConvergeWithUltimateInterestCreditingRate" abstract="false" name="PeriodOfTimeCurrentInterestCreditingRateWillConvergeWithUltimateInterestCreditingRate" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="xbrli:integerItemType"/>
+  <xs:element id="ko_DefinedBenefitPlanAssumptionsUsedCalculatingNetPeriodicBenefitCostFiveYearAnnualizedReturnonAssets" abstract="false" name="DefinedBenefitPlanAssumptionsUsedCalculatingNetPeriodicBenefitCostFiveYearAnnualizedReturnonAssets" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:percentItemType"/>
+  <xs:element id="ko_DefinedBenefitPlanAssumptionsUsedCalculatingNetPeriodicBenefitCostTenYearAnnualizedReturnOnAssets" abstract="false" name="DefinedBenefitPlanAssumptionsUsedCalculatingNetPeriodicBenefitCostTenYearAnnualizedReturnOnAssets" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:percentItemType"/>
+  <xs:element id="ko_DefinedBenefitPlanAssumptionsUsedCalculatingNetPeriodicBenefitCostFifteenYearAnnualizedReturnOnAssets" abstract="false" name="DefinedBenefitPlanAssumptionsUsedCalculatingNetPeriodicBenefitCostFifteenYearAnnualizedReturnOnAssets" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:percentItemType"/>
+  <xs:element id="ko_DefinedBenefitPlanAssumptionsUsedCalculatingNetPeriodicBenefitCostAnnualizedReturnOnAssetsSinceInception" abstract="false" name="DefinedBenefitPlanAssumptionsUsedCalculatingNetPeriodicBenefitCostAnnualizedReturnOnAssetsSinceInception" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:percentItemType"/>
+  <xs:element id="ko_ScheduleOfIncomeTaxTable" abstract="true" name="ScheduleOfIncomeTaxTable" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrldt:hypercubeItem" type="xbrli:stringItemType"/>
+  <xs:element id="ko_ScheduleOfIncomeTaxLineItems" abstract="true" name="ScheduleOfIncomeTaxLineItems" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="xbrli:stringItemType"/>
+  <xs:element id="ko_PhilippinesAndBangladeshBottlingOperationsMember" abstract="true" name="PhilippinesAndBangladeshBottlingOperationsMember" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types:domainItemType"/>
+  <xs:element id="ko_DeferredTaxAssetsOperatingLossCarryforwardsAndInterestCarryforward" abstract="false" name="DeferredTaxAssetsOperatingLossCarryforwardsAndInterestCarryforward" nillable="true" xbrli:periodType="instant" xbrli:balance="debit" substitutionGroup="xbrli:item" type="xbrli:monetaryItemType"/>
+  <xs:element id="ko_DeferredTaxLiabilitiesCompensationAndBenefits" abstract="false" name="DeferredTaxLiabilitiesCompensationAndBenefits" nillable="true" xbrli:periodType="instant" xbrli:balance="credit" substitutionGroup="xbrli:item" type="xbrli:monetaryItemType"/>
+  <xs:element id="ko_ValuationAllowanceRollForward" abstract="true" name="ValuationAllowanceRollForward" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="xbrli:stringItemType"/>
+  <xs:element id="ko_TaxCutsAndJobsActTransitionTaxForAccumulatedForeignEarningsPayments" abstract="false" name="TaxCutsAndJobsActTransitionTaxForAccumulatedForeignEarningsPayments" nillable="true" xbrli:periodType="duration" xbrli:balance="credit" substitutionGroup="xbrli:item" type="xbrli:monetaryItemType"/>
+  <xs:element id="ko_UnrecognizedTaxBenefitsDifferentTaxJurisdictions" abstract="false" name="UnrecognizedTaxBenefitsDifferentTaxJurisdictions" nillable="true" xbrli:periodType="instant" xbrli:balance="credit" substitutionGroup="xbrli:item" type="xbrli:monetaryItemType"/>
+  <xs:element id="ko_InterestCarryforwards" abstract="false" name="InterestCarryforwards" nillable="true" xbrli:periodType="instant" xbrli:balance="debit" substitutionGroup="xbrli:item" type="xbrli:monetaryItemType"/>
+  <xs:element id="ko_OtherComprehensiveIncomeLossNetInvestmentHedgesGainLossArisingDuringPeriodTax" abstract="false" name="OtherComprehensiveIncomeLossNetInvestmentHedgesGainLossArisingDuringPeriodTax" nillable="true" xbrli:periodType="duration" xbrli:balance="debit" substitutionGroup="xbrli:item" type="xbrli:monetaryItemType"/>
+  <xs:element id="ko_OtherComprehensiveIncomeLossNetInvestmentHedgeGainLossNetOfTax" abstract="false" name="OtherComprehensiveIncomeLossNetInvestmentHedgeGainLossNetOfTax" nillable="true" xbrli:periodType="duration" xbrli:balance="credit" substitutionGroup="xbrli:item" type="xbrli:monetaryItemType"/>
+  <xs:element id="ko_DescriptionOfAociComponentAxis" abstract="true" name="DescriptionOfAociComponentAxis" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrldt:dimensionItem" type="xbrli:stringItemType"/>
+  <xs:element id="ko_DescriptionOfAOCIComponentDomain" abstract="true" name="DescriptionOfAOCIComponentDomain" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:domainItemType"/>
+  <xs:element id="ko_DivestituresdeconsolidationsandotherMember" abstract="true" name="DivestituresdeconsolidationsandotherMember" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:domainItemType"/>
+  <xs:element id="ko_SettlementchargescreditsMember" abstract="true" name="SettlementchargescreditsMember" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:domainItemType"/>
+  <xs:element id="ko_ImpactofcurtailmentsMember" abstract="true" name="ImpactofcurtailmentsMember" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:domainItemType"/>
+  <xs:element id="ko_FairValueAssetsAndLiabilitiesMeasuredOnRecurringBasisDisclosureItemsAxis" abstract="true" name="FairValueAssetsAndLiabilitiesMeasuredOnRecurringBasisDisclosureItemsAxis" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrldt:dimensionItem" type="xbrli:stringItemType"/>
+  <xs:element id="ko_FairValueAssetsAndLiabilitiesMeasuredOnRecurringBasisDisclosureItemsDomain" abstract="true" name="FairValueAssetsAndLiabilitiesMeasuredOnRecurringBasisDisclosureItemsDomain" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:domainItemType"/>
+  <xs:element id="ko_FairValueMeasurementNettingAdjustmentMember" abstract="true" name="FairValueMeasurementNettingAdjustmentMember" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:domainItemType"/>
+  <xs:element id="ko_FairValueAssetsAndLiabilitiesMeasuredOnRecurringBasisFinancialStatementCaptionsLineItems" abstract="true" name="FairValueAssetsAndLiabilitiesMeasuredOnRecurringBasisFinancialStatementCaptionsLineItems" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="xbrli:stringItemType"/>
+  <xs:element id="ko_BodyArmorMember" abstract="true" name="BodyArmorMember" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:domainItemType"/>
+  <xs:element id="ko_NonrecurringgainLossfairvalueadjustment" abstract="false" name="NonrecurringgainLossfairvalueadjustment" nillable="true" xbrli:periodType="duration" xbrli:balance="credit" substitutionGroup="xbrli:item" type="xbrli:monetaryItemType"/>
+  <xs:element id="ko_DefinedBenefitPlanPlanAssetsLevel3ReconciliationNetForeignCurrencyTranslationAdjustments" abstract="false" name="DefinedBenefitPlanPlanAssetsLevel3ReconciliationNetForeignCurrencyTranslationAdjustments" nillable="true" xbrli:periodType="duration" xbrli:balance="debit" substitutionGroup="xbrli:item" type="xbrli:monetaryItemType"/>
+  <xs:element id="ko_FairValueMeasurementsAbstract" abstract="true" name="FairValueMeasurementsAbstract" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="xbrli:stringItemType"/>
+  <xs:element id="ko_OtherFairValueDisclosuresAbstract" abstract="true" name="OtherFairValueDisclosuresAbstract" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="xbrli:stringItemType"/>
+  <xs:element id="ko_ComponentOfOtherOperatingAndNonoperatingCostAndExpenseTable" abstract="true" name="ComponentOfOtherOperatingAndNonoperatingCostAndExpenseTable" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrldt:hypercubeItem" type="xbrli:stringItemType"/>
+  <xs:element id="ko_IndonesiaAndPakistanMember" abstract="true" name="IndonesiaAndPakistanMember" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types:domainItemType"/>
+  <xs:element id="ko_CertainBottlingOperationsInIndiaRefranchisedIn2024Member" abstract="true" name="CertainBottlingOperationsInIndiaRefranchisedIn2024Member" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types:domainItemType"/>
+  <xs:element id="ko_ProductivityAndReinvestmentMember" abstract="true" name="ProductivityAndReinvestmentMember" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:domainItemType"/>
+  <xs:element id="ko_NorthAmericaOURestructuringMember" abstract="true" name="NorthAmericaOURestructuringMember" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:domainItemType"/>
+  <xs:element id="ko_StrategicRealignmentMember" abstract="true" name="StrategicRealignmentMember" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:domainItemType"/>
+  <xs:element id="ko_ComponentOfOperatingAndNonoperatingOtherCostAndExpenseLineItems" abstract="true" name="ComponentOfOperatingAndNonoperatingOtherCostAndExpenseLineItems" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="xbrli:stringItemType"/>
+  <xs:element id="ko_OtherOperatingChargesDisclosureAbstract" abstract="true" name="OtherOperatingChargesDisclosureAbstract" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="xbrli:stringItemType"/>
+  <xs:element id="ko_OtherNonoperatingChargesAbstract" abstract="true" name="OtherNonoperatingChargesAbstract" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="xbrli:stringItemType"/>
+  <xs:element id="ko_EquityMethodInvestmentProportionateShareOfUnusualOrInfrequentItemsRecordedByInvestees" abstract="false" name="EquityMethodInvestmentProportionateShareOfUnusualOrInfrequentItemsRecordedByInvestees" nillable="true" xbrli:periodType="duration" xbrli:balance="debit" substitutionGroup="xbrli:item" type="xbrli:monetaryItemType"/>
+  <xs:element id="ko_OutsideServicesMember" abstract="true" name="OutsideServicesMember" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:domainItemType"/>
+  <xs:element id="ko_OtherDirectCostsMember" abstract="true" name="OtherDirectCostsMember" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:domainItemType"/>
+  <xs:element id="ko_SalesRevenueConcentrateOperationsNetPercentage" abstract="false" name="SalesRevenueConcentrateOperationsNetPercentage" nillable="true" xbrli:periodType="instant" substitutionGroup="xbrli:item" type="dtr-types1:percentItemType"/>
+  <xs:element id="ko_SalesRevenueFinishedProductsOperationsNetPercentage" abstract="false" name="SalesRevenueFinishedProductsOperationsNetPercentage" nillable="true" xbrli:periodType="instant" substitutionGroup="xbrli:item" type="dtr-types1:percentItemType"/>
+  <xs:element id="ko_SalesRevenueNetPercentage" abstract="false" name="SalesRevenueNetPercentage" nillable="true" xbrli:periodType="instant" substitutionGroup="xbrli:item" type="dtr-types1:percentItemType"/>
+  <xs:element id="ko_PropertyPlantAndEquipmentNetPercentage" abstract="false" name="PropertyPlantAndEquipmentNetPercentage" nillable="true" xbrli:periodType="instant" substitutionGroup="xbrli:item" type="dtr-types:percentItemType"/>
+  <xs:element id="ko_EliminationsMember" abstract="true" name="EliminationsMember" nillable="true" xbrli:periodType="duration" substitutionGroup="xbrli:item" type="dtr-types1:domainItemType"/>
+  <xs:element id="ko_RevenueForReportableSegments" abstract="false" name="RevenueForReportableSegments" nillable="true" xbrli:periodType="duration" xbrli:balance="credit" substitutionGroup="xbrli:item" type="xbrli:monetaryItemType"/>
+  <xs:element id="ko_IntersegmentRevenue" abstract="false" name="IntersegmentRevenue" nillable="true" xbrli:periodType="duration" xbrli:balance="credit" substitutionGroup="xbrli:item" type="xbrli:monetaryItemType"/>
+</xs:schema>
