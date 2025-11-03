@@ -1,4 +1,3 @@
-
 # -*- coding: utf-8 -*-
 """
 advanced_rag.py
@@ -14,36 +13,74 @@ Notes: install dependencies with `pip install -r requirements.txt` inside a venv
 """
 
 import os
+import hashlib
 import logging
+import asyncio
+import threading
+import http.server
+import socketserver
+from pathlib import Path
+from typing import Optional, List
+import subprocess
+import sys
+
 try:
     import nest_asyncio
 except Exception:
-    nest_asyncio = None
-from pathlib import Path
-from typing import List
-import types
-import hashlib
-import json
+    pass
 
-import pandas as pd
+import PyPDF2
+from bs4 import BeautifulSoup
+
+class Document:
+    def __init__(self, id_, text, metadata=None):
+        self.id_ = id_
+        self.text = text
+        self.metadata = metadata or {}
+
+class MinimalMultiFormatParser:
+    def __init__(self):
+        pass
+    def load_data(self, filename):
+        ext = os.path.splitext(filename)[1].lower()
+        docs = []
+        try:
+            if ext == ".pdf":
+                with open(filename, "rb") as f:
+                    reader = PyPDF2.PdfReader(f)
+                    text = "\n".join(page.extract_text() or "" for page in reader.pages)
+            elif ext in [".htm", ".html"]:
+                with open(filename, "r", encoding="utf-8", errors="ignore") as f:
+                    soup = BeautifulSoup(f, "html.parser")
+                    text = soup.get_text(separator="\n")
+            elif ext in [".xml", ".xsd"]:
+                with open(filename, "r", encoding="utf-8", errors="ignore") as f:
+                    soup = BeautifulSoup(f, "xml")
+                    text = soup.get_text(separator="\n")
+            elif ext == ".txt":
+                with open(filename, "r", encoding="utf-8", errors="ignore") as f:
+                    text = f.read()
+            else:
+                text = ""
+            if text:
+                doc = Document(
+                    id_=filename,
+                    text=text,
+                    metadata={"file_name": filename}
+                )
+                docs.append(doc)
+        except Exception as e:
+            logging.warning(f"Failed to parse {filename}: {e}")
+        return docs
+
+import types
 import time
 
 # LlamaIndex / LlamaParse imports (ensure packages are installed)
 # Heavy third-party imports are loaded lazily inside functions so the module
 # can be imported in test environments without all external packages installed.
 
-if nest_asyncio is not None:
-    try:
-        nest_asyncio.apply()
-    except Exception:
-        # best-effort; failure to apply is non-fatal for tests
-        logging.debug("nest_asyncio.apply() failed, continuing without it")
 
-# Central logging configuration. Respect LOG_LEVEL environment variable.
-_log_level = os.environ.get("LOG_LEVEL", "INFO").upper()
-logging.basicConfig(level=getattr(logging, _log_level, logging.INFO), format="%(asctime)s %(levelname)s: %(message)s")
-
-# ---------- Configuration & helpers ----------
 
 def load_api_keys(save_to_env: bool = False):
     """Load API keys from environment variables and validate them.
@@ -55,75 +92,64 @@ def load_api_keys(save_to_env: bool = False):
     """
     import getpass
 
-    # Try to use a SecretManager (AWS) first, fallback to environment variables
-    # Prefer AWS Secrets Manager when available and credentials are present.
-    openai_key = None
-    llamaparse_key = None
-    try:
-        from secret_manager import AwsSecretsManager
-        # Secret names can be overridden via env vars for flexibility in different environments
-        openai_secret_name = os.environ.get("OPENAI_SECRET_NAME", "OPENAI_API_KEY")
-        llamaparse_secret_name = os.environ.get("LLAMA_CLOUD_SECRET_NAME", "LLAMA_CLOUD_API_KEY")
-        sm = AwsSecretsManager()
-        # Only attempt if boto3 found credentials
-        if getattr(sm, 'has_aws_credentials', lambda: False)():
-            openai_key = sm.get_secret(openai_secret_name) or None
-            llamaparse_key = sm.get_secret(llamaparse_secret_name) or None
-    except Exception:
-        # Any failure here should not be fatal - we'll fallback to env or interactive prompt
-        openai_key = openai_key or None
-        llamaparse_key = llamaparse_key or None
 
-    # If attached to a TTY, prompt interactively for any missing keys (hidden input)
-    if hasattr(os, "isatty") and os.isatty(0):
-        openai_key = openai_key or os.environ.get("OPENAI_API_KEY") or getpass.getpass(prompt="OPENAI_API_KEY (input hidden): ")
-        llamaparse_key = llamaparse_key or os.environ.get("LLAMA_CLOUD_API_KEY") or getpass.getpass(prompt="LLAMA_CLOUD_API_KEY (input hidden): ")
-    else:
-        # Non-interactive: only accept keys from secret manager or environment
-        openai_key = openai_key or os.environ.get("OPENAI_API_KEY")
-        llamaparse_key = llamaparse_key or os.environ.get("LLAMA_CLOUD_API_KEY")
+    # Always prompt interactively for OpenAI key if not set
+    openai_key = os.environ.get("OPENAI_API_KEY")
+    if not openai_key:
+        openai_key = getpass.getpass(prompt="Enter your OPENAI_API_KEY (input hidden): ")
+    if not openai_key:
+        raise EnvironmentError("OPENAI_API_KEY is required for this workflow.")
 
-    # Basic validation
-    if not openai_key or not llamaparse_key:
-        raise EnvironmentError("Both OPENAI_API_KEY and LLAMA_CLOUD_API_KEY are required")
+    # Prompt interactively for LlamaCloud key if not set
+    llamacloud_key = os.environ.get("LLAMA_CLOUD_API_KEY")
+    if not llamacloud_key:
+        llamacloud_key = getpass.getpass(prompt="Enter your LLAMA_CLOUD_API_KEY (input hidden): ")
+    if not llamacloud_key:
+        logging.warning("LLAMA_CLOUD_API_KEY is not set. Some features may not work.")
 
-    # Optionally save to .env for convenience (explicit)
     if save_to_env:
         env_path = Path(".env")
         try:
             with env_path.open("a") as f:
                 f.write(f"OPENAI_API_KEY={openai_key}\n")
-                f.write(f"LLAMA_CLOUD_API_KEY={llamaparse_key}\n")
+                f.write(f"LLAMA_CLOUD_API_KEY={llamacloud_key}\n")
             logging.info("Saved API keys to %s (be careful not to commit this file)", env_path)
         except Exception:
-            logging.exception("Failed to save keys to .env")
+            logging.exception("Failed to save key to .env")
 
-    return openai_key, llamaparse_key
+    return openai_key, llamacloud_key
 
 
 # ---------- Ingestion pipeline ----------
 class DocumentIngestionPipeline:
-    """Load and parse documents from a directory using LlamaParse (or another parser).
+    """Load and parse documents from a directory using a parser.
 
     Usage:
-        pipeline = DocumentIngestionPipeline(data_dir="./data", parser_cls=LlamaParse, parser_kwargs={...})
+        pipeline = DocumentIngestionPipeline(data_dir="./data", parser_cls=YourParser, parser_kwargs={...})
         pdf_files = pipeline.get_pdf_files()
         documents = pipeline.parse_documents(pdf_files)
     """
 
-    def __init__(self, data_dir: str = "./data", parser_cls=None, parser_kwargs: dict = None, max_docs: int = None):
+    def __init__(self, data_dir: str = "./data", parser_cls=None, parser_kwargs: Optional[dict] = None, max_docs: Optional[int] = None):
         self.data_dir = Path(data_dir)
         self.parser_cls = parser_cls
         self.parser_kwargs = parser_kwargs or {}
         # Optional cap on total documents/chunks returned (helps in CI and memory-constrained runs)
         self.max_docs = max_docs
 
-    def get_pdf_files(self) -> List[str]:
-        pdf_files = [str(p) for p in self.data_dir.glob("*.pdf")]
-        logging.info("Found %d PDF files in %s", len(pdf_files), str(self.data_dir))
-        for p in pdf_files:
+
+    def get_supported_files(self) -> List[str]:
+        """Return all supported files (.pdf, .htm, .xml, .xsd, .txt) in the data directory."""
+        exts = ["*.pdf", "*.htm", "*.xml", "*.xsd", "*.txt"]
+        files = []
+        for ext in exts:
+            found = list(self.data_dir.glob(ext))
+            files.extend(found)
+        files = [str(p) for p in files]
+        logging.info("Found %d supported files in %s", len(files), str(self.data_dir))
+        for p in files:
             logging.info("  - %s", p)
-        return pdf_files
+        return files
 
     def parse_documents(self, pdf_files: List[str]):
         if not self.parser_cls:
@@ -142,7 +168,6 @@ class DocumentIngestionPipeline:
             while attempts < max_attempts:
                 try:
                     docs = parser.load_data(filename)
-                    break
                 except Exception as e:
                     attempts += 1
                     logging.warning("Attempt %d to parse %s failed: %s", attempts, filename, e)
@@ -157,6 +182,8 @@ class DocumentIngestionPipeline:
             for doc in docs:
                 # Get text representation
                 try:
+                    from pathlib import Path
+                    from typing import Optional
                     text = getattr(doc, "text", None) or (doc.get_text() if hasattr(doc, "get_text") else str(doc))
                 except Exception:
                     text = str(doc)
@@ -197,30 +224,23 @@ def build_auto_index(documents):
     # installing llama_index.
     try:
         from llama_index.core import VectorStoreIndex
-
         index = VectorStoreIndex.from_documents(documents)
         retriever = index.as_retriever(similarity_top_k=15)
         return index, retriever
-    except Exception:
-        logging.warning("llama_index not available; using simple in-memory retriever fallback")
-
+    except Exception as e:
+        logging.warning(f"llama_index not available; using simple in-memory retriever fallback: {e}")
         class SimpleRetriever:
             def __init__(self, docs):
-                # docs: list of document-like objects
                 self._docs = docs
-
             def retrieve(self, query, n_results=15):
-                # very simple substring scoring
                 nodes = []
                 for d in self._docs:
                     text = getattr(d, 'text', str(d))
                     score = 1.0 if query.lower() in text.lower() else 0.0
                     node = types.SimpleNamespace(node=types.SimpleNamespace(text=text, metadata=getattr(d, 'metadata', {})), score=score)
                     nodes.append(node)
-                # sort by score desc
                 nodes.sort(key=lambda n: n.score, reverse=True)
                 return nodes[:n_results]
-
         retriever = SimpleRetriever(documents)
         return None, retriever
 
@@ -275,16 +295,19 @@ def build_chroma_index(documents, persist_directory: str = "./chroma_db"):
         coll = client.get_or_create_collection(name="rag_collection")
 
         # ingest tuples: id, text, metadata
-        to_upsert = []
+        ids = []
+        docs = []
+        metas = []
         for i, d in enumerate(documents):
             try:
                 text = getattr(d, "text", None) or (d.get_text() if hasattr(d, "get_text") else str(d))
             except Exception:
                 text = str(d)
             meta = getattr(d, "metadata", None) or {}
-            to_upsert.append({"id": str(i), "document": text, "meta": meta})
-
-        coll.add(to_upsert)
+            ids.append(str(i))
+            docs.append(text)
+            metas.append(meta)
+        coll.add(ids=ids, documents=docs, metadatas=metas)
 
         # Create a tiny wrapper that mimics an index/retriever interface used above
         class ChromaRetrieverWrapper:
@@ -309,12 +332,8 @@ def build_chroma_index(documents, persist_directory: str = "./chroma_db"):
         return build_auto_index(documents)
 
 
-# ---------- Retriever safe wrapper (sync + async handling) ----------
-import asyncio
-import threading
-import http.server
-import socketserver
 
+# ---------- Retriever safe wrapper (sync + async handling) ----------
 
 def run_async_query_safe(query_engine, query: str, timeout: float = 10.0):
     """Run a query against a query_engine that may be async or sync.
@@ -355,103 +374,78 @@ def safe_query_with_retry(query_engine, query: str, retries: int = 1, timeout: f
             logging.warning("Query attempt %d failed: %s", attempt, e)
             last_exc = e
             continue
-    raise last_exc
+    if last_exc is not None:
+        raise last_exc
+    else:
+        raise RuntimeError("Unknown error")
 
 
 # ---------- Main flow ----------
 def main(data_dir: str = "./data"):
-    # Load keys and configure models
-    openai_key, llamaparse_key = load_api_keys()
+    # Load OpenAI and LlamaCloud keys
+    openai_key, llamacloud_key = load_api_keys()
 
-    # Lazy-import and configure LlamaIndex/OpenAI related classes so module import
-    # doesn't fail if those packages aren't installed in test environments.
-    from llama_index.core import Settings
-    from llama_index.llms.openai import OpenAI
-    from llama_index.embeddings.openai import OpenAIEmbedding
+    # Set OpenAI API key globally for openai and llama_index
+    try:
+        import openai
+        openai.api_key = openai_key
+    except Exception:
+        logging.warning("Could not set openai.api_key; OpenAI package not available.")
 
-    Settings.llm = OpenAI(model="gpt-4", temperature=0.1)
-    Settings.embed_model = OpenAIEmbedding(model="text-embedding-ada-002")
-    Settings.chunk_size = 512
-    Settings.chunk_overlap = 50
+    # If using llama_index embedding, set key explicitly
+    try:
+        from llama_index.embeddings.openai import OpenAIEmbedding
+        from llama_index.core import Settings
+        Settings.embed_model = OpenAIEmbedding(api_key=openai_key)
+    except Exception:
+        logging.warning("Could not set OpenAIEmbedding with API key; using default embedding model.")
 
-    # Ingestion
-    # Lazily import parser class
-    from llama_parse import LlamaParse
 
-    ingestion = DocumentIngestionPipeline(
-        data_dir=data_dir,
-        parser_cls=LlamaParse,
-        parser_kwargs={
-            "api_key": llamaparse_key,
-            "result_type": "markdown",
-            "verbose": False,
-            "language": "en",
-            "num_workers": 4,
-        },
-        # optional cap for production can be set by environment variable
-        max_docs=int(os.environ.get("MAX_INGEST_DOCS", "0")) or None,
-    )
-    pdf_files = ingestion.get_pdf_files()
-    if not pdf_files:
-        logging.warning("No PDF files found in %s - exiting", data_dir)
-        return
-    documents = ingestion.parse_documents(pdf_files)
+    # Minimal multi-format parser
+    from llama_index.core.schema import Document
+    import PyPDF2
+    from bs4 import BeautifulSoup
 
-    logging.info("Total document chunks: %d", len(documents))
+class MinimalMultiFormatParser:
+        def __init__(self):
+            pass
+        def load_data(self, filename):
+            ext = os.path.splitext(filename)[1].lower()
+            docs = []
+            try:
+                if ext == ".pdf":
+                    with open(filename, "rb") as f:
+                        reader = PyPDF2.PdfReader(f)
+                        text = "\n".join(page.extract_text() or "" for page in reader.pages)
+                elif ext in [".htm", ".html"]:
+                    with open(filename, "r", encoding="utf-8", errors="ignore") as f:
+                        soup = BeautifulSoup(f, "html.parser")
+                        text = soup.get_text(separator="\n")
+                elif ext in [".xml", ".xsd"]:
+                    with open(filename, "r", encoding="utf-8", errors="ignore") as f:
+                        soup = BeautifulSoup(f, "xml")
+                        text = soup.get_text(separator="\n")
+                elif ext == ".txt":
+                    with open(filename, "r", encoding="utf-8", errors="ignore") as f:
+                        text = f.read()
+                else:
+                    text = ""
+                if text:
+                    doc = Document(
+                        id_=filename,
+                        text=text,
+                        metadata={"file_name": filename}
+                    )
+                    docs.append(doc)
+            except Exception as e:
+                logging.warning(f"Failed to parse {filename}: {e}")
+            return docs
 
-    # Build indexes
-    auto_index, auto_retriever = build_auto_index(documents)
-    sw_index, sw_retriever, sw_postprocessor = build_sentence_window_index(documents)
-    am_index, am_retriever = build_auto_merging_index(documents)
-
-    # Reranker and query engines (lazy import)
-    from llama_index.core.postprocessor import SentenceTransformerRerank
-    from llama_index.core.query_engine import RetrieverQueryEngine
-
-    reranker = SentenceTransformerRerank(model="cross-encoder/ms-marco-MiniLM-L-2-v2", top_n=5)
-
-    # Query engines
-    sm_query_engine = RetrieverQueryEngine(retriever=sw_retriever, node_postprocessors=[sw_postprocessor, reranker])
-    am_query_engine = RetrieverQueryEngine(retriever=am_retriever, node_postprocessors=[reranker])
-    a_query_engine = RetrieverQueryEngine(retriever=auto_retriever, node_postprocessors=[reranker])
-
-    # Example evaluation: find revenue-related chunks
-    all_nodes = list(auto_index.docstore.docs.values())
-    revenue_chunks = [n for n in all_nodes if ("revenue" in n.text.lower() or "net revenues" in n.text.lower()) and any(y in n.text for y in ["2020","2021","2022"])]
-    logging.info("Found %d revenue-related chunks", len(revenue_chunks))
-    for n in revenue_chunks[:5]:
-        logging.info(n.text[:300].replace('\n',' '))
-
-    # Simple compare function (returns pandas DataFrame)
-    def compare_retrievers(query: str):
-        results = []
-        engines = [("Sentence Window", sm_query_engine), ("Auto Merging", am_query_engine), ("Standard Auto", a_query_engine)]
-        for name, engine in engines:
-            start = time.time()
-            resp = engine.query(query)
-            elapsed = time.time() - start
-            num_nodes = len(resp.source_nodes)
-            avg_score = sum(n.score for n in resp.source_nodes) / num_nodes if num_nodes else 0
-            results.append({
-                "retriever": name,
-                "response": str(resp),
-                "num_source_nodes": num_nodes,
-                "avg_similarity_score": avg_score,
-                "response_time": elapsed,
-                "response_length": len(str(resp)),
-                "unique_sources": len(set(n.node.metadata.get("file_name","unknown") for n in resp.source_nodes)),
-            })
-        return pd.DataFrame(results)
-
-    # Run a few test queries
-    test_queries = [
-        "What was Coca-Cola's revenue in 2020?",
-        "What are the main risk factors mentioned in the 10-K?",
-    ]
-    all_dfs = [compare_retrievers(q).assign(query=q) for q in test_queries]
-    combined = pd.concat(all_dfs, ignore_index=True)
-    combined.to_csv("retriever_comparison_results.csv", index=False)
-    logging.info("Saved retriever comparison results to retriever_comparison_results.csv")
+def build_chroma_index(documents, persist_directory="./chroma_db"):
+    # ...existing code...
+    # This is a placeholder for the actual build_chroma_index implementation
+    # Ensure this function is defined at the top level for import
+    pass
 
 
 def _start_metrics_server(port: int = 8000):
@@ -541,14 +535,13 @@ def run_cli():
     # Key management: if save-to-keyring requested, store keys there after prompt
     if args.save_to_keyring:
         try:
-            import keyring
+            import keyring  # noqa: F401
         except Exception:
             logging.error("keyring package is required for --save-to-keyring")
 
     # If metrics enabled, start server
-    metric_counter = None
     if args.metrics_port:
-        metric_counter = _start_metrics_server(args.metrics_port)
+        _start_metrics_server(args.metrics_port)
 
     # For CI/no-prompt mode, ensure env vars present
     if args.no_prompt:
@@ -577,5 +570,34 @@ def run_cli():
             logging.info("Exiting after keyboard interrupt")
 
 
+def legacy_main():
+    if len(sys.argv) < 3:
+        print("Usage: python app.py <file_path> <query>")
+        sys.exit(1)
+    file_path = sys.argv[1]
+    query = sys.argv[2]
+    subprocess.run([sys.executable, "pipeline.py", file_path, query], check=True)
+
+from fastapi import FastAPI, UploadFile, Form
+
+app = FastAPI()
+
+@app.post("/run-pipeline")
+async def run_pipeline_api(file: UploadFile, query: str = Form(...)):
+    file_path = f"data/{file.filename}"
+    with open(file_path, "wb") as f:
+        f.write(await file.read())
+    result = subprocess.run(
+        [sys.executable, "pipeline.py", file_path, query],
+        capture_output=True,
+        text=True
+    )
+    return {"output": result.stdout}
+
 if __name__ == "__main__":
+    # Prompt for OpenAI API key interactively if not set
+    import getpass
+    if not os.environ.get("OPENAI_API_KEY"):
+        openai_key = getpass.getpass(prompt="Enter your OPENAI_API_KEY (input hidden): ")
+        os.environ["OPENAI_API_KEY"] = openai_key
     run_cli()

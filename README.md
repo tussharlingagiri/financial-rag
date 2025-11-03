@@ -1,3 +1,32 @@
+#
+# Project Structure
+#
+# - `ingestion/ingest.py`: Run this to ingest documents and build the Chroma index.
+# - `inference/api.py`: Run this to start the FastAPI inference server for RAG Q&A.
+# - `app.py`: Shared pipeline logic and utilities.
+# - `frontend/`: Next.js frontend for user Q&A.
+#
+# Usage
+#
+# 1. **Ingestion**
+#    ```sh
+#    source .venv/bin/activate
+#    python ingestion/ingest.py
+#    ```
+#    This will parse all supported files in `./data` and build the Chroma index in `./chroma_db`.
+#
+# 2. **Inference**
+#    ```sh
+#    python inference/api.py
+#    ```
+#    This will start the FastAPI backend for Q&A using the persisted index.
+#
+# 3. **Frontend**
+#    ```sh
+#    cd frontend
+#    npm run dev
+#    ```
+#    Access the UI at `http://localhost:3000`.
 # Rag-Financial (advanced_rag)
 
 This repository contains `advanced_rag.py` — a refactored, non-Colab version of a Retrieval-Augmented Generation (RAG) script originally developed in Colab.
@@ -100,6 +129,43 @@ The app exposes a minimal HTTP `/health` endpoint on port 8080 to support contai
 
 A sample IAM policy that grants `secretsmanager:GetSecretValue` for the two secrets is provided in `deploy/iam_policy_secrets.json`. Update the `REGION` and `ACCOUNT_ID` placeholders before applying.
 - The code falls back to environment variables `OPENAI_API_KEY` and `LLAMA_CLOUD_API_KEY` or to an interactive prompt if running in a TTY.
+
+## AWS Bedrock (optional)
+
+You can use AWS Bedrock as the LLM backend instead of OpenAI or other providers. To enable Bedrock set the following environment variables:
+
+- `LLM_PROVIDER=bedrock`
+- `BEDROCK_MODEL_ID=<model-id>` (for example `amazon.titan-rlhf` or another model available in your account)
+- AWS credentials (IAM role or `AWS_ACCESS_KEY_ID`/`AWS_SECRET_ACCESS_KEY`) and `AWS_REGION` set in the environment or instance metadata.
+
+Minimal IAM policy to allow Bedrock invocations (attach to the role used by your container/CI runner):
+
+```json
+{
+	"Version": "2012-10-17",
+	"Statement": [
+		{
+			"Effect": "Allow",
+			"Action": [
+				"bedrock:InvokeModel",
+				"bedrock:InvokeModelWithResponseStream",
+				"bedrock:GetModel"
+			],
+			"Resource": "*"
+		}
+	]
+}
+```
+
+Notes:
+
+- Bedrock is an AWS service — you need an AWS account and Bedrock access in the target region. Some accounts require onboarding to Bedrock.
+- Calls to Bedrock cost money; avoid running unguarded integration tests against live models.
+- The repository includes `llm_bedrock.py` with a small `BedrockLLMAdapter`. The adapter is minimal and may need to be adapted to the exact request/response shape of your chosen model.
+
+For a detailed Bedrock setup guide (IAM policy examples, env var guidance, and run instructions) see `docs/bedrock-setup.md`.
+
+Note: when `LLM_PROVIDER=bedrock` the app does not require `OPENAI_API_KEY` — it relies on AWS credentials or an IAM role to call Bedrock.
 
 ## Development (tooling)
 
